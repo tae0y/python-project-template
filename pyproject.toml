@@ -1,0 +1,50 @@
+[project]
+name = "changeme"
+version = "0.1.0"
+description = "chageme"
+readme = "README.md"
+authors = [
+    { name = "tae0y[박태영]", email = "tae0yp@gmail.com" }
+]
+requires-python = ">=3.12"
+
+[tool.bandit]
+exclude_dirs = ["tests", "scripts"]
+skips = ["B101"]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+typeCheckingMode = "standard"
+reportMissingTypeStubs = "warning"
+reportUnknownParameterType = "warning"
+reportUnknownArgumentType = "warning"
+reportUnknownMemberType = "warning"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "--cov=src/real_estate --cov-report=term-missing --cov-fail-under=80"
+
+[tool.coverage.run]
+source = ["src/real_estate"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+]
