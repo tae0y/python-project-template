@@ -1,5 +1,5 @@
 ---
-name: fix
+name: auto-fix
 description: Auto-fix lint and formatting issues in Python code using ruff. Use when you want to apply automatic code fixes. Does not fix type errors or security issues.
 ---
 

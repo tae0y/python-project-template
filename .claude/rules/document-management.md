@@ -1,20 +1,24 @@
 # Document Management
 
-Project documents live in `gitignore/` and follow strict naming conventions. Skills like `status` and `next` rely on these patterns via glob — breaking the convention breaks those skills.
+Project documents live in `localdocs/` and follow strict naming conventions. Skills like `status` and `next` rely on these patterns via glob — breaking the convention breaks those skills.
 
 ## File Naming Rules
 
 | Type | Pattern | Examples |
 |------|---------|---------|
-| Worklog backlog | `worklog.todo.md` | `gitignore/worklog.todo.md` |
-| Worklog in-progress | `worklog.doing.md` | `gitignore/worklog.doing.md` |
-| Worklog completed | `worklog.done.md` | `gitignore/worklog.done.md` |
-| Plan / architecture | `plan.*.md` | `gitignore/plan.architecture.md`, `gitignore/plan.mcp.md` |
-| Reference material | `refer.*.md` | `gitignore/refer.openapi.md`, `gitignore/refer.agents.md` |
+| Backlog (future, pre-plan) | `backlog.*.md` | `localdocs/backlog.api-v2.md` |
+| Plan / architecture | `plan.*.md` | `localdocs/plan.architecture.md`, `localdocs/plan.mcp.md` |
+| Learning notes | `learn.*.md` | `localdocs/learn.validation.md`, `localdocs/learn.onbid-api.md` |
+| Worklog backlog | `worklog.todo.md` | `localdocs/worklog.todo.md` |
+| Worklog in-progress | `worklog.doing.md` | `localdocs/worklog.doing.md` |
+| Worklog completed | `worklog.done.md` | `localdocs/worklog.done.md` |
+| Reference material | `refer.*.md` | `localdocs/refer.openapi.md`, `localdocs/refer.agents.md` |
 
 ## Rules
 
 - **Never rename** existing worklog files — skills depend on exact filenames.
-- **Always use the prefix** (`plan.`, `refer.`) when creating new documents.
-- **One topic per file** — don't combine unrelated content into one plan or refer doc.
-- All documents go in `gitignore/` — they are local-only and not committed.
+- **Always use the prefix** (`backlog.`, `plan.`, `learn.`, `refer.`) when creating new documents.
+- **Use `backlog.*.md`** for future ideas not yet included in an approved `plan.*.md`.
+- **Use `learn.*.md`** for learning notes; do not overload worklog files for knowledge capture.
+- **One topic per file** — don't combine unrelated content into one backlog, plan, learn, or refer doc.
+- All documents go in `localdocs/` — they are local-only and not committed.

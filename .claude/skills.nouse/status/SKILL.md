@@ -9,15 +9,15 @@ Gather a lightweight snapshot of the current project state.
 
 ## 1. Read Worklog (Minimal)
 
-- `gitignore/worklog.doing.md` — full (usually short)
-- `gitignore/worklog.todo.md` — full (usually short)
-- `gitignore/worklog.done.md` — **last 20 lines only** (`tail -n 20`)
+- `localdocs/worklog.doing.md` — full (usually short)
+- `localdocs/worklog.todo.md` — full (usually short)
+- `localdocs/worklog.done.md` — **last 20 lines only** (`tail -n 20`)
 
 Never read the full done file — it grows unboundedly.
 
 ## 2. Understand Project Structure
 
-Read the **project plan document** if it exists (look for files matching `gitignore/plan*.md`).
+Read the **project plan document** if it exists (look for files matching `localdocs/plan*.md`).
 Read only the section that describes phases or implementation priorities — skip detailed specs.
 
 If no plan document exists, infer structure from the source directory:
@@ -42,7 +42,7 @@ Report what exists vs. what the plan indicates is still missing.
 ## 4. Environment Check
 
 - `.env` — existence only (do not read contents)
-- `.gitignore` — confirm `.env` is listed
+- `.localdocs` — confirm `.env` is listed
 - `pyproject.toml` — key dependencies (skim, don't parse exhaustively)
 
 ## 5. Git State

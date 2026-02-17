@@ -10,9 +10,9 @@ Identify the highest-priority next task based on current project state.
 ## 1. Gather State (Minimal Reads)
 
 Read only:
-- `gitignore/worklog.doing.md` — full (short by design)
-- `gitignore/worklog.todo.md` — full (short by design)
-- Project plan if it exists (`gitignore/plan*.md`) — **priority/phase section only**, not the full doc
+- `localdocs/worklog.doing.md` — full (short by design)
+- `localdocs/worklog.todo.md` — full (short by design)
+- Project plan if it exists (`localdocs/plan*.md`) — **priority/phase section only**, not the full doc
 
 Then run a single directory listing to see what's implemented:
 ```bash

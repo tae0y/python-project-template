@@ -49,7 +49,7 @@ Your goal is to generate a complete, working application from an OpenAPI specifi
 ### Step 4: Add Supporting Files
 - Generate appropriate unit tests for services and controllers
 - Create README with setup and running instructions
-- Add .gitignore and environment configuration templates
+- Add .localdocs and environment configuration templates
 - Generate API documentation files
 - Create example requests/integration tests
 
@@ -75,7 +75,7 @@ project-name/
 │       │   ├── controllers/
 │       │   └── services/
 │       └── resources/
-├── .gitignore
+├── .localdocs
 ├── .env.example
 └── docker-compose.yml
 ```

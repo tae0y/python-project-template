@@ -1,6 +1,8 @@
 # Local files
-gitignore/
+localdocs/
 .arxiv/
+.coverage
+AGENTS.md
 
 # Python-generated files
 __pycache__/
@@ -15,7 +17,6 @@ wheels/
 
 # Environment variables
 .env
-.env.*
 
 # IDE settings
 .vscode/

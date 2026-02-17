@@ -59,3 +59,18 @@ For multi-step tasks, state a brief plan:
 ```
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+
+## 5. Use the Real Interface, Not a Shortcut
+
+**Go through the official entry point. Same result via a different path is not equivalent.**
+
+When managing dependencies:
+- Add packages with `uv add <package>` — never edit `pyproject.toml` or `uv.lock` directly.
+- Direct file edits bypass uv's dependency resolution and can silently break lock file integrity.
+
+When running or testing scripts:
+- Invoke the actual script file: `uv run python path/to/script.py` or the registered CLI entry point.
+- Never inline the script's source as a string argument to `python -c "..."` or equivalent.
+- Inlining skips the real file path, import chain, and entry point — what passes may still be broken in production.
+
+The rule: If the execution path differs from how the code runs in production, the verification is incomplete.

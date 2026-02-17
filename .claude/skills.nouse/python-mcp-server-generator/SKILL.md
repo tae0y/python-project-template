@@ -22,7 +22,7 @@ Create a complete Model Context Protocol (MCP) server in Python with the followi
 - Initialize with `uv init project-name`
 - Add MCP SDK: `uv add "mcp[cli]"`
 - Create main server file (e.g., `server.py`)
-- Add `.gitignore` for Python projects
+- Add `.localdocs` for Python projects
 - Configure for direct execution with `if __name__ == "__main__"`
 
 ### Server Configuration
