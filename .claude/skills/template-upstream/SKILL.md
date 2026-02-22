@@ -11,12 +11,13 @@ Direction: Project → Template. Generate a structured proposal file in `proposa
 
 ## Proposal File Convention
 
-Path: `proposals/YYYYMMDD/proposal-<slug>.md`
+Path: `proposals/draft/YYYYMMDD/proposal-<slug>.md`
 
+- `draft/`: all new proposals start here
 - `YYYYMMDD`: today's date
 - `slug`: kebab-case summary of the change (e.g., `add-ruff-hook`, `update-commit-convention`)
 
-Example: `proposals/20260222/proposal-add-ruff-hook.md`
+Example: `proposals/draft/20260222/proposal-add-ruff-hook.md`
 
 ## Proposal File Format
 
@@ -132,14 +133,14 @@ TEMPLATE_ROOT="$TMPDIR/template"
 Then create the proposals directory:
 
 ```bash
-mkdir -p "$TEMPLATE_ROOT/proposals/YYYYMMDD"
+mkdir -p "$TEMPLATE_ROOT/proposals/draft/YYYYMMDD"
 ```
 
 Skip if already exists.
 
 ### 4. Write proposal file
 
-Create `$TEMPLATE_ROOT/proposals/YYYYMMDD/proposal-<slug>.md` using the format above.
+Create `$TEMPLATE_ROOT/proposals/draft/YYYYMMDD/proposal-<slug>.md` using the format above.
 
 - Replace all project-specific values with `<your-value>` placeholders
 - Infer `Category` from file location: `.claude/rules/` → rule, `.claude/hooks/` → hook, `.claude/skills/` → skill, etc.
@@ -147,7 +148,7 @@ Create `$TEMPLATE_ROOT/proposals/YYYYMMDD/proposal-<slug>.md` using the format a
 ### 5. Report
 
 ```
-Created: <TEMPLATE_ROOT>/proposals/20260222/proposal-<slug>.md
+Created: <TEMPLATE_ROOT>/proposals/draft/20260222/proposal-<slug>.md
 
 Review and apply via the template-proposal-review skill.
 ```
