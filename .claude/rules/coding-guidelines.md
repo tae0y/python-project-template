@@ -97,8 +97,6 @@ The test: Can you explain *why* the problem occurs, not just *that* it occurs? I
 
 - If a direct solution exists, use it. Do not choose an indirect or workaround approach without explaining why.
 - Never introduce a workaround silently — name it, state why the direct path is blocked, and ask before proceeding.
-- Environment variables must be read at runtime, not at module load time. `_VAR = os.getenv(...)` at module level bypasses test patching and deployment overrides — use a function instead.
-- In multi-service configurations (e.g., Docker Compose), verify that each service receives its required environment variables explicitly. Assumed defaults are silent failures.
 
 The test: Would the user be surprised by the approach you chose? If yes, ask first.
 
@@ -112,28 +110,3 @@ Before integrating an external dependency:
 - When filtering or validating data, validate all fields that will be *used downstream*, not just the fields in the filter condition.
 
 The test: Have you read the official docs for this specific library version, or are you working from memory?
-
-## 9. Secrets and Domain Hygiene
-
-**Never embed secrets or real domain names in code or config files.**
-
-- API keys, tokens, passwords, and credentials must live in environment variables or a secrets manager — never in source files.
-- Use placeholder hostnames in config and documentation: `example.com`, `localhost`, `your-domain.com`. Never use real DDNS hostnames, internal IP addresses, or production URLs in committed files.
-- Before committing, scan for: API key patterns, DDNS hostnames, IP addresses, `.env` variable values inlined into source.
-- If a secret was accidentally committed, treat it as compromised immediately — rotate it, then remove it from history.
-
-The test: Would this file be safe to paste into a public GitHub issue? If not, find and remove the sensitive content.
-
-## 10. Pre-Commit Quality Gate
-
-**Run `check` and `auto-fix` before every commit. Do not skip.**
-
-Before asking for commit approval, always run in this order:
-
-1. `check` — detect lint, format, type, and security issues (read-only)
-2. `auto-fix` — apply safe automatic fixes (ruff lint + format)
-3. Re-run `check` — confirm clean
-
-If `check` still fails after `auto-fix` (type errors, security issues), resolve before committing.
-
-The test: Does `check` pass cleanly? If not, the commit is not ready.

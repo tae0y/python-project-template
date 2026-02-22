@@ -67,7 +67,8 @@ Called automatically at specific workflow moments — no explicit invocation nee
 | `worklog doing` | Immediately after plan approval, first step starts | `planning` skill — Worklog Automation Rule |
 | `worklog done` | Immediately when step completes (tests pass) | `planning` skill — Worklog Automation Rule |
 | `worklog doing` | Immediately when next step begins | `planning` skill — Worklog Automation Rule |
-| `check` + `auto-fix` | Before requesting commit approval | `coding-guidelines` section 10 |
+| `check` + `auto-fix` | Before requesting commit approval | Pre-Commit Quality Gate (see below) |
+| Secrets scan | Before requesting commit approval | Pre-Commit Quality Gate (see below) |
 | `audit` reminder | After external library import detected | `check-external-lib-usage.sh` hook |
 
 ---
@@ -88,6 +89,22 @@ Must be directly requested by the user or Claude.
 | `adr` agent | Spawn via Task tool | When architectural decision needs recording |
 | `docs-guardian` agent | Spawn via Task tool | When permanent docs need creation/improvement |
 | `use-case-data-patterns` agent | Spawn via Task tool | When analyzing data patterns for new feature |
+
+---
+
+---
+
+## Pre-Commit Quality Gate
+
+Run in this order before requesting commit approval:
+
+1. `check` — detect lint, format, type, and security issues (read-only)
+2. `auto-fix` — apply safe automatic fixes (ruff lint + format)
+3. Re-run `check` — confirm clean
+4. Secrets scan — confirm no API keys, tokens, real hostnames, or `.env` values are inlined in source files
+
+If `check` still fails after `auto-fix` (type errors, security issues), resolve before committing.
+If a secret was accidentally committed, treat it as compromised immediately — rotate it, then remove it from history.
 
 ---
 
