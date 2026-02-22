@@ -73,4 +73,41 @@ When running or testing scripts:
 - Never inline the script's source as a string argument to `python -c "..."` or equivalent.
 - Inlining skips the real file path, import chain, and entry point — what passes may still be broken in production.
 
+When writing tests:
+- Call the real function under test — never create a parallel stub or dummy that mimics its behavior.
+- A test that bypasses the actual implementation is a false safety net: it passes while hiding real bugs.
+
 The rule: If the execution path differs from how the code runs in production, the verification is incomplete.
+
+## 6. Diagnose Before Fixing
+
+**Identify the root cause before proposing a solution. A fix without a diagnosis is a guess.**
+
+Before implementing any fix or new feature:
+- State the observed symptom, your root cause hypothesis, and how you will verify it — in that order.
+- If the cause is unclear, investigate first. Do not start coding until the cause is understood.
+- Do not treat ambiguous or visual symptoms (rendering glitches, layout issues) as simpler than they are — they often have deeper structural causes.
+
+The test: Can you explain *why* the problem occurs, not just *that* it occurs? If not, keep diagnosing.
+
+## 7. No Indirect Solutions Without Approval
+
+**Take the direct path. If you must deviate, say so and get approval first.**
+
+- If a direct solution exists, use it. Do not choose an indirect or workaround approach without explaining why.
+- Never introduce a workaround silently — name it, state why the direct path is blocked, and ask before proceeding.
+- Environment variables must be read at runtime, not at module load time. `_VAR = os.getenv(...)` at module level bypasses test patching and deployment overrides — use a function instead.
+- In multi-service configurations (e.g., Docker Compose), verify that each service receives its required environment variables explicitly. Assumed defaults are silent failures.
+
+The test: Would the user be surprised by the approach you chose? If yes, ask first.
+
+## 8. Verify External Constraints Before Implementing
+
+**Check official documentation before using any external library, API, or service. Internal knowledge is not enough.**
+
+Before integrating an external dependency:
+- Consult official docs or use available tools (context7, microsoft-learn MCP) to verify the library's actual behavior, known limitations, and version-specific changes.
+- Do not rely on training knowledge alone — APIs change, libraries have implementation-specific quirks that differ from the standard spec (e.g., Auth0's `/oidc/register` vs standard `/oauth/register`).
+- When filtering or validating data, validate all fields that will be *used downstream*, not just the fields in the filter condition.
+
+The test: Have you read the official docs for this specific library version, or are you working from memory?

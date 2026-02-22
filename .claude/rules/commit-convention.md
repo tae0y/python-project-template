@@ -1,6 +1,6 @@
 # Commit Message Convention
 
-Every commit message must begin with one of the following prefixes:
+All commit messages must be written in English. Every commit message must begin with one of the following prefixes:
 
 - `[MAINTENANCE]` — no functional change: refactoring, formatting, dependency bumps, doc updates, test additions
 - `[NEW FEATURE]` — new capability exposed to users or callers
