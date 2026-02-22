@@ -14,4 +14,8 @@ Then summarize in this format:
 **Up next (todo):** [first 2–3 items from worklog.todo.md]
 **Recent learning:** [one-line summary of most recent learn file]
 
+Then reconnect to the execution loop:
+- If `worklog.doing.md` has an active task: invoke `progress-guardian` with the current plan phase and active task as context. Hand off: "Resuming execution from [last state]. Continue from the next step."
+- If `worklog.doing.md` is empty or has no active task: ask the user which task from `worklog.todo.md` to start next before invoking `progress-guardian`.
+
 End with: "Ready to continue. What's the next step?"

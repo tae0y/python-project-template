@@ -7,9 +7,10 @@ Read this to understand what each component is, when it applies, and how to reas
 
 When starting a session in this project, read in this order:
 1. `CLAUDE.md` (this file) — architecture overview and communication style
-2. `.claude/rules/` — behavioral constraints applied to every response
-3. `.claude/skills/` — domain-specific patterns loaded as background context
-4. `localdocs/worklog.doing.md` — active task state (if resuming work)
+2. `.claude/WORKFLOW.md` — trigger map: what runs when, and how
+3. `.claude/rules/` — behavioral constraints applied to every response
+4. `.claude/skills/` — domain-specific patterns loaded as background context
+5. `localdocs/worklog.doing.md` — active task state (if resuming work)
 
 ---
 

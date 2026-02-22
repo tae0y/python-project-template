@@ -123,3 +123,17 @@ The test: Have you read the official docs for this specific library version, or 
 - If a secret was accidentally committed, treat it as compromised immediately — rotate it, then remove it from history.
 
 The test: Would this file be safe to paste into a public GitHub issue? If not, find and remove the sensitive content.
+
+## 10. Pre-Commit Quality Gate
+
+**Run `check` and `auto-fix` before every commit. Do not skip.**
+
+Before asking for commit approval, always run in this order:
+
+1. `check` — detect lint, format, type, and security issues (read-only)
+2. `auto-fix` — apply safe automatic fixes (ruff lint + format)
+3. Re-run `check` — confirm clean
+
+If `check` still fails after `auto-fix` (type errors, security issues), resolve before committing.
+
+The test: Does `check` pass cleanly? If not, the commit is not ready.

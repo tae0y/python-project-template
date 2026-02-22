@@ -32,6 +32,9 @@ Before proceeding:
 - Are there known limitations or version-specific behaviors to be aware of?
 - Do not rely on training knowledge alone — verify against official documentation.
 
+After adding a new dependency:
+- Run `audit` skill to check for known vulnerabilities in updated dependencies.
+
 (This is a reminder, not a block. Continue if already verified.)
 EOF
 
