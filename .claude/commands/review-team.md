@@ -3,12 +3,11 @@ Set --max-turns 15 for each teammate.
 
 Before starting, all teammates must read:
 - .claude/ (all files in current project)
-- /Users/bachtaeyeong/10_SrcHub/real-estate-mcp/localdocs/worklog.done.md
-- /Users/bachtaeyeong/10_SrcHub/real-estate-mcp/localdocs/adr/*.md
-- /Users/bachtaeyeong/10_SrcHub/real-estate-mcp/localdocs/learn/*.md
-- /Users/bachtaeyeong/10_SrcHub/that-night-sky/localdocs/worklog.done.md
-- /Users/bachtaeyeong/10_SrcHub/that-night-sky/localdocs/adr/*.md
-- /Users/bachtaeyeong/10_SrcHub/that-night-sky/localdocs/learn/*.md
+- localdocs/worklog.done.md (if it exists)
+- localdocs/adr/*.md (if any)
+- localdocs/learn/*.md (if any)
+
+If the user supplies additional project paths via $ARGUMENTS, also read their localdocs/ equivalents.
 
 Teammates:
 1. Prompt Engineer – evaluates instruction quality, clarity, and prompt failure patterns visible in worklogs

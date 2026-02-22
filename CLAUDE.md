@@ -3,6 +3,14 @@
 This section explains the architectural building blocks available in this project.
 Read this to understand what each component is, when it applies, and how to reason about it.
 
+## Reading Order for New Sessions
+
+When starting a session in this project, read in this order:
+1. `CLAUDE.md` (this file) — architecture overview and communication style
+2. `.claude/rules/` — behavioral constraints applied to every response
+3. `.claude/skills/` — domain-specific patterns loaded as background context
+4. `localdocs/worklog.doing.md` — active task state (if resuming work)
+
 ---
 
 ## Commands
@@ -38,6 +46,9 @@ A skill might define how to write ADRs in this project, how to handle Oracle SQL
 or how to parse Korean government API responses. When the current task falls within a skill's
 domain, apply its patterns without waiting to be told.
 
+Skills in `.claude/skills.nouse/` are disabled — they exist for reference or future activation.
+Do not apply them. To enable a skill, move its directory into `.claude/skills/`.
+
 ---
 
 ## Agent Teams
@@ -68,3 +79,13 @@ MCP tools appear alongside built-in tools (Read, Write, Bash) and are called the
 When an MCP server is configured for this project, treat its tools as first-class options,
 not fallbacks. If a task involves live external data and an MCP tool covers it,
 prefer that over approximating with local tools or your training knowledge.
+
+---
+
+## Communication and Reasoning Style
+
+- Respond in Korean (해요/어요 체). Concise and analytical. Code, commits, and structured output remain in English.
+- State the conclusion first. Separate facts from assumptions.
+- Before answering complex questions, decompose into facts, assumptions, and preferences.
+- Frame conclusions affirmatively ("It is B") before addressing alternatives.
+- No praise, filler, or emojis.

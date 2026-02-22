@@ -67,6 +67,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 When managing dependencies:
 - Add packages with `uv add <package>` — never edit `pyproject.toml` or `uv.lock` directly.
 - Direct file edits bypass uv's dependency resolution and can silently break lock file integrity.
+- (`uv` is the project's package manager and task runner, replacing pip/poetry/virtualenv.)
 
 When running or testing scripts:
 - Invoke the actual script file: `uv run python path/to/script.py` or the registered CLI entry point.
@@ -111,3 +112,14 @@ Before integrating an external dependency:
 - When filtering or validating data, validate all fields that will be *used downstream*, not just the fields in the filter condition.
 
 The test: Have you read the official docs for this specific library version, or are you working from memory?
+
+## 9. Secrets and Domain Hygiene
+
+**Never embed secrets or real domain names in code or config files.**
+
+- API keys, tokens, passwords, and credentials must live in environment variables or a secrets manager — never in source files.
+- Use placeholder hostnames in config and documentation: `example.com`, `localhost`, `your-domain.com`. Never use real DDNS hostnames, internal IP addresses, or production URLs in committed files.
+- Before committing, scan for: API key patterns, DDNS hostnames, IP addresses, `.env` variable values inlined into source.
+- If a secret was accidentally committed, treat it as compromised immediately — rotate it, then remove it from history.
+
+The test: Would this file be safe to paste into a public GitHub issue? If not, find and remove the sensitive content.

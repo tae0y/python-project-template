@@ -22,6 +22,9 @@ wheels/
 .vscode/
 .idea/
 
+# Claude Code local overrides (may contain secrets or machine-specific paths)
+.claude/settings.local.json
+
 # Database
 *.sqlite
 *.db
