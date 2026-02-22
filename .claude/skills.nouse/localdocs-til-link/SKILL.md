@@ -1,17 +1,21 @@
 ---
 name: localdocs-til-link
-description: Links a project's localdocs/ folder to the TIL repository via symlink for centralized document management. Use when setting up a new project, after accidentally deleting localdocs/, or when connecting localdocs/ to /Users/bachtaeyeong/20_DocHub/TIL for git-backed persistence. Triggered by requests like "link localdocs to TIL", "setup localdocs symlink", or "/localdocs-til-link 802 that-night-sky".
+description: Links a project's localdocs/ folder to the TIL repository via symlink for centralized document management. Use when setting up a new project, after accidentally deleting localdocs/, or when connecting localdocs/ to a TIL repo for git-backed persistence. Triggered by requests like "link localdocs to TIL", "setup localdocs symlink", or "/localdocs-til-link 802 that-night-sky".
 ---
 
 # localdocs-til-link
 
-Connects a project's `localdocs/` to the TIL repo (`/Users/bachtaeyeong/20_DocHub/TIL`) via symlink. Real files live in TIL (git-managed); the project sees `localdocs/` as if it were a normal directory.
+Connects a project's `localdocs/` to the TIL repo via symlink. Real files live in TIL (git-managed); the project sees `localdocs/` as if it were a normal directory.
 
 ## Prerequisites
 
-- TIL folder name is passed as an argument, e.g. `"802 that-night-sky"`
-- If no argument is given, ask the user for the TIL folder name
-- `TIL_BASE=/Users/bachtaeyeong/20_DocHub/TIL`
+Ask the user for the following if not provided as arguments:
+
+- **TIL folder name** — the subdirectory inside TIL for this project, e.g. `"802 that-night-sky"`
+- **TIL_BASE** — absolute path to the TIL repository root, e.g. `~/20_DocHub/TIL`
+
+Resolve `TIL_BASE` to an absolute path before use (expand `~` if needed).
+
 - `PROJECT_LOCALDOCS={project_root}/localdocs`
 
 ## Workflow

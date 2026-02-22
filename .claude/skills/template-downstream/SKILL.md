@@ -18,7 +18,7 @@ Direction: Template → Project. Apply only the files that exist upstream to the
 
 Resolve `TEMPLATE_ROOT` in this priority order:
 
-1. **Local path** — if `/Users/bachtaeyeong/10_SrcHub/python-template/.claude` exists, use the parent directory as `TEMPLATE_ROOT`. No network required.
+1. **User-provided path** — ask the user: "Do you have a local clone of the template repo? If yes, provide the path." If provided and `<path>/.claude/` exists, use its parent as `TEMPLATE_ROOT`. No network required.
 2. **Same remote** — if the current project's `origin` matches `https://github.com/tae0y/python-project-template.git`, use the local repo directly.
 3. **Shallow clone** — otherwise, clone to a temp directory:
 

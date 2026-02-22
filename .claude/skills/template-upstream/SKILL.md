@@ -1,9 +1,11 @@
 ---
 name: template-upstream
-description: Propose changes from the current project back to the upstream python-project-template repository by generating a structured proposal file in proposals/. Use when a pattern, rule, hook, skill, or config in this project is good enough to share with the template. Triggers on: "템플릿에 반영", "upstream 제안", "template에 올리고 싶어", "이 패턴 템플릿에 추가", "proposal 만들어줘".
+description: IMPORTANT: This skill must be run in the template repo context, not in a downstream project. Propose changes from the current project back to the upstream python-project-template repository by generating a structured proposal file in proposals/. Use when a pattern, rule, hook, skill, or config in this project is good enough to share with the template. Triggers on: "템플릿에 반영", "upstream 제안", "template에 올리고 싶어", "이 패턴 템플릿에 추가", "proposal 만들어줘".
 ---
 
 # template-upstream
+
+> **Context:** Run this skill from the **template repo** (`python-project-template`), not from a downstream project. Proposals are template-level artifacts — one shared `proposals/` directory for all projects, not one per downstream project.
 
 Direction: Project → Template. Generate a structured proposal file in `proposals/` so that good patterns discovered in this project can be reviewed for inclusion in the upstream template.
 
@@ -114,17 +116,30 @@ Read the target file. Before including any content in the proposal, remove or re
 
 After removal, verify the content would be safe to paste into a public GitHub issue.
 
-### 3. Create date directory
+### 3. Resolve template root and create date directory
+
+Resolve `TEMPLATE_ROOT` using the same priority order as `template-downstream`:
+
+1. **User-provided path** — ask the user: "Do you have a local clone of the template repo? If yes, provide the path." If provided and `<path>/.claude/` exists, use its parent as `TEMPLATE_ROOT`.
+2. **Clone** — otherwise:
 
 ```bash
-mkdir -p proposals/YYYYMMDD
+TMPDIR=$(mktemp -d)
+git clone --depth 1 https://github.com/tae0y/python-project-template.git "$TMPDIR/template"
+TEMPLATE_ROOT="$TMPDIR/template"
+```
+
+Then create the proposals directory:
+
+```bash
+mkdir -p "$TEMPLATE_ROOT/proposals/YYYYMMDD"
 ```
 
 Skip if already exists.
 
 ### 4. Write proposal file
 
-Create `proposals/YYYYMMDD/proposal-<slug>.md` using the format above.
+Create `$TEMPLATE_ROOT/proposals/YYYYMMDD/proposal-<slug>.md` using the format above.
 
 - Replace all project-specific values with `<your-value>` placeholders
 - Infer `Category` from file location: `.claude/rules/` → rule, `.claude/hooks/` → hook, `.claude/skills/` → skill, etc.
@@ -132,7 +147,7 @@ Create `proposals/YYYYMMDD/proposal-<slug>.md` using the format above.
 ### 5. Report
 
 ```
-Created: proposals/20260222/proposal-<slug>.md
+Created: <TEMPLATE_ROOT>/proposals/20260222/proposal-<slug>.md
 
 Review and apply via the template-proposal-review skill.
 ```
