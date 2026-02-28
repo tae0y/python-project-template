@@ -11,7 +11,7 @@ Reference when starting a new session or onboarding to `.claude/`.
 [New feature/task]        [Resume session]
         │                       │
         ▼                       ▼
-   prd (optional)         /project:resume
+   prd (optional)         /project:resume-work
         │                       │
         ▼                       ▼
    planning ──────────► execution loop
@@ -82,7 +82,7 @@ Must be directly requested by the user or Claude.
 | `check` skill | "run check" or auto before commit | Before commit, when issues suspected |
 | `auto-fix` skill | "apply auto-fix" or auto before commit | After `check` |
 | `audit` skill | "run audit" | After new dependency added; monthly |
-| `/project:resume` command | Type directly | When resuming a session |
+| `/project:resume-work` command | Type directly | When resuming a session |
 | `tdd-guardian` agent | Spawn via Task tool | When TDD compliance verification needed |
 | `refactor-scan` agent | Spawn via Task tool | After GREEN, for deep refactoring assessment |
 | `learn` agent | Spawn via Task tool | After feature complete, to merge knowledge |

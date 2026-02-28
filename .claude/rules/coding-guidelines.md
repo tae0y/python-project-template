@@ -1,112 +1,64 @@
-# Coding Guidelines
+# Coding Standards
 
-Behavioral guidelines to reduce common LLM coding mistakes, derived from [Andrej Karpathy's observations](https://x.com/karpathy/status/2015883857489522876).
+These rules apply to all code-related tasks. They override default behavior where they conflict.
 
-**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
+## Diagnose before fixing
 
-## 1. Think Before Coding
+IMPORTANT: Identify the root cause before proposing any solution.
 
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
+State the observed symptom, your root-cause hypothesis, and how you will verify it — in that order. If the cause is unclear, investigate first. Do not write code until the cause is understood.
 
-Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them — don't pick silently.
-- If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+## Plan before implementing
 
-## 2. Simplicity First
+For any change beyond a one-line fix, state a brief plan with verifiable checkpoints before writing code:
 
-**Minimum code that solves the problem. Nothing speculative.**
-
-- No features beyond what was asked.
-- No abstractions for single-use code.
-- No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios.
-- If you write 200 lines and it could be 50, rewrite it.
-
-Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
-
-## 3. Surgical Changes
-
-**Touch only what you must. Clean up only your own mess.**
-
-When editing existing code:
-- Don't "improve" adjacent code, comments, or formatting.
-- Don't refactor things that aren't broken.
-- Match existing style, even if you'd do it differently.
-- If you notice unrelated dead code, mention it — don't delete it.
-
-When your changes create orphans:
-- Remove imports/variables/functions that YOUR changes made unused.
-- Don't remove pre-existing dead code unless asked.
-
-The test: Every changed line should trace directly to the user's request.
-
-## 4. Goal-Driven Execution
-
-**Define success criteria. Loop until verified.**
-
-Transform tasks into verifiable goals:
-- "Add validation" → "Write tests for invalid inputs, then make them pass"
-- "Fix the bug" → "Write a test that reproduces it, then make it pass"
-- "Refactor X" → "Ensure tests pass before and after"
-
-For multi-step tasks, state a brief plan:
 ```
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
+1. [Step] → verify: [how]
+2. [Step] → verify: [how]
 ```
 
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+Wait for confirmation on multi-step plans unless the user has indicated to proceed autonomously.
 
-## 5. Use the Real Interface, Not a Shortcut
+## Simplicity first
 
-**Go through the official entry point. Same result via a different path is not equivalent.**
+Write the minimum code that solves the stated problem. No speculative features, premature abstractions, or flexibility that was not requested. If your solution exceeds 3x the expected size, stop and simplify.
 
-When managing dependencies:
-- Add packages with `uv add <package>` — never edit `pyproject.toml` or `uv.lock` directly.
-- Direct file edits bypass uv's dependency resolution and can silently break lock file integrity.
-- (`uv` is the project's package manager and task runner, replacing pip/poetry/virtualenv.)
+## Surgical changes
 
-When running or testing scripts:
-- Invoke the actual script file: `uv run python path/to/script.py` or the registered CLI entry point.
-- Never inline the script's source as a string argument to `python -c "..."` or equivalent.
-- Inlining skips the real file path, import chain, and entry point — what passes may still be broken in production.
+Modify only what the current task requires. Match existing code style, even if you would do it differently.
 
-When writing tests:
-- Call the real function under test — never create a parallel stub or dummy that mimics its behavior.
-- A test that bypasses the actual implementation is a false safety net: it passes while hiding real bugs.
+Remove imports, variables, or functions that YOUR changes made unused. Do not touch pre-existing dead code, comments, or formatting unless asked.
 
-The rule: If the execution path differs from how the code runs in production, the verification is incomplete.
+The test: every changed line traces directly to the user's request.
 
-## 6. Diagnose Before Fixing
+## Verify through the real interface
 
-**Identify the root cause before proposing a solution. A fix without a diagnosis is a guess.**
+Run the actual script, test file, or entry point — never simulate execution with `python -c` or inline stubs. Call the real function under test; never create parallel dummy implementations.
 
-Before implementing any fix or new feature:
-- State the observed symptom, your root cause hypothesis, and how you will verify it — in that order.
-- If the cause is unclear, investigate first. Do not start coding until the cause is understood.
-- Do not treat ambiguous or visual symptoms (rendering glitches, layout issues) as simpler than they are — they often have deeper structural causes.
+Use the project's package manager for dependencies (e.g., `uv add`, `npm install`). Never edit lock files or dependency manifests directly.
 
-The test: Can you explain *why* the problem occurs, not just *that* it occurs? If not, keep diagnosing.
+## Test-driven workflow
 
-## 7. No Indirect Solutions Without Approval
+Write or update tests before implementation when the project has a test framework. Never modify existing tests to make new code pass. Never hard-code values or create placeholder data to satisfy tests.
 
-**Take the direct path. If you must deviate, say so and get approval first.**
+## Protect existing safeguards
 
-- If a direct solution exists, use it. Do not choose an indirect or workaround approach without explaining why.
-- Never introduce a workaround silently — name it, state why the direct path is blocked, and ask before proceeding.
+IMPORTANT: Never remove or disable existing error handling, safety checks, linter rules, type checking, or test assertions without explicit permission. If a guard blocks your change, report the conflict — do not silently bypass it.
 
-The test: Would the user be surprised by the approach you chose? If yes, ask first.
+## Verify external dependencies
 
-## 8. Verify External Constraints Before Implementing
+Check official documentation before using any external library or API. Do not rely on training knowledge for API signatures, configuration options, or version-specific behavior.
 
-**Check official documentation before using any external library, API, or service. Internal knowledge is not enough.**
+When available, use project tooling (MCP servers, context7, docs commands) to verify. State when you are working from memory versus verified documentation.
 
-Before integrating an external dependency:
-- Consult official docs or use available tools (context7, microsoft-learn MCP) to verify the library's actual behavior, known limitations, and version-specific changes.
-- Do not rely on training knowledge alone — APIs change, libraries have implementation-specific quirks that differ from the standard spec (e.g., Auth0's `/oidc/register` vs standard `/oauth/register`).
-- When filtering or validating data, validate all fields that will be *used downstream*, not just the fields in the filter condition.
+## Direct solutions only
 
-The test: Have you read the official docs for this specific library version, or are you working from memory?
+Take the most direct path to solve the problem. If a direct solution exists, use it. If you must use an indirect approach or workaround, name it, explain why the direct path is blocked, and get approval before proceeding.
+
+## No silent failures
+
+Never remove safety checks to make code compile. Never stub out failing paths instead of fixing them. Never hard-code expected output to pass tests. If something fails and you cannot fix it, report the failure clearly.
+
+## Context management
+
+Commit working changes frequently for rollback safety. After extended sessions (50+ tool calls), summarize current state and remaining tasks to prevent context drift.

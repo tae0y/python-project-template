@@ -1,18 +1,7 @@
-# Feature Guide for Claude Code
+# Claude Code Features
 
-This section explains the architectural building blocks available in this project.
+This section explains the architectural building blocks available in Claude Code.
 Read this to understand what each component is, when it applies, and how to reason about it.
-
-## Reading Order for New Sessions
-
-When starting a session in this project, read in this order:
-1. `CLAUDE.md` (this file) — architecture overview and communication style
-2. `.claude/WORKFLOW.md` — trigger map: what runs when, and how
-3. `.claude/rules/` — behavioral constraints applied to every response
-4. `.claude/skills/` — domain-specific patterns loaded as background context
-5. `localdocs/worklog.doing.md` — active task state (if resuming work)
-
----
 
 ## Commands
 
@@ -80,13 +69,3 @@ MCP tools appear alongside built-in tools (Read, Write, Bash) and are called the
 When an MCP server is configured for this project, treat its tools as first-class options,
 not fallbacks. If a task involves live external data and an MCP tool covers it,
 prefer that over approximating with local tools or your training knowledge.
-
----
-
-## Communication and Reasoning Style
-
-- Respond in Korean (해요/어요 체). Concise and analytical. Code, commits, and structured output remain in English.
-- State the conclusion first. Separate facts from assumptions.
-- Before answering complex questions, decompose into facts, assumptions, and preferences.
-- Frame conclusions affirmatively ("It is B") before addressing alternatives.
-- No praise, filler, or emojis.

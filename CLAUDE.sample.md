@@ -21,15 +21,6 @@ When starting a session in this project, read in this order:
 
 ---
 
-## Communication and Reasoning Style
-
-- Respond in Korean (해요/어요 체). Concise and analytical. Code, commits, and structured output remain in English.
-- State the conclusion first. Separate facts from assumptions.
-- Before answering complex questions, decompose into facts, assumptions, and preferences.
-- Frame conclusions affirmatively ("It is B") before addressing alternatives.
-- No praise, filler, or emojis.
-- Use plain text by default; avoid headings and lists unless the content warrants structure.
-
 ### Rule Hierarchy
 
 When rules from different files apply to the same response, use this priority order:

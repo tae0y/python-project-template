@@ -30,7 +30,7 @@ For significant work, maintain one long-term plan, worklog files, and a learning
 | **`localdocs/worklog.todo.md`** | Pending phase/session tasks | Persistent |
 | **`localdocs/worklog.doing.md`** | In-progress phase/session tasks | Persistent |
 | **`localdocs/worklog.done.md`** | Completed phase/session log | Persistent |
-| **`localdocs/learn.<topic>.md`** | Learning notes / gotchas / decisions | Temporary, merged then archived/removed |
+| **`localdocs/learn.<topic>.md`** | Learning notes / gotchas / decisions | Scoped to a topic; merged into CLAUDE.md/ADR, kept as reference |
 
 ### Document Relationships
 
@@ -52,9 +52,10 @@ For significant work, maintain one long-term plan, worklog files, and a learning
                     ┌─────────────┴─────────────┐
                     │                           │
                     ▼                           ▼
-              Keep worklog logs        Merge architectural learnings into:
-                                       - CLAUDE.md (`learn`)
-                                       - ADRs (`adr`)
+              Keep worklog logs        Merge learnings into:
+                                       - CLAUDE.md (`learn` agent)
+                                       - ADRs (`adr` agent)
+                                       Keep learn files as reference
 ```
 
 ## What Makes a "Known-Good Increment"
@@ -242,17 +243,19 @@ Use `localdocs/learn.<topic>.md` as the source for knowledge merge (`learn`/`adr
 
 ### 3. Close Plan
 
-After learnings are merged:
+After learnings are merged, remove only the plan file (learn files stay as reference):
 
 ```bash
 rm localdocs/plan.feature.md
 git add -A
-git commit -m "chore: complete [feature], remove planning docs"
+git commit -m "chore: complete [feature], remove plan"
 ```
 
 **The knowledge lives on in:**
-- CLAUDE.md (gotchas, patterns)
+- CLAUDE.md (gotchas, patterns — merged from learn files)
 - ADRs (architectural decisions)
+- `localdocs/learn.<topic>.md` (original learning notes, kept for reference)
+- `localdocs/worklog.done.md` (execution history)
 - Git history (what was done)
 - Project docs (if applicable)
 
