@@ -1,4 +1,6 @@
-# 워크플로우: 계획 - 구현 - 문서화 - 가드
+# Follow the Plan-Implement-Document-Guard Workflow
+
+이 문서는 python-template의 작업 워크플로우를 설명합니다.
 
 ```
 [새 작업]              [세션 재개]

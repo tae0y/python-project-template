@@ -1,34 +1,12 @@
 # python-template
 
-Claude Code로 Python 프로젝트를 시작할 때 `.claude/` 설정을 매번 새로 만들지 않아도 되도록 만든 템플릿입니다. 복제하면 코드 품질 검사, TDD 워크플로우, 커밋 가드가 바로 작동합니다.
+Claude Code Python 프로젝트의 `.claude/` 설정을 재사용할 수 있도록 만든 템플릿입니다. 복제하면 코드 품질 검사, TDD 워크플로우, 커밋 가드가 바로 작동합니다.
 
-## 더 알아보기
+**자동화된 워크플로우** — 계획 수립, TDD 구현, 지식 보존, 커밋 전 품질 검사까지 skill이 단계별로 연결됩니다. 수동 호출 없이 맥락에 따라 자동 적용됩니다. ([상세](docs/guide-workflow.md))
 
-- [워크플로우: 계획 - 구현 - 문서화 - 가드](docs/guide-workflow.md)
-- [템플릿 관리 skill](docs/guide-template-management.md)
-- [Claude Code 기능 소개](docs/guide-claude-code-features.md)
+**양방향 템플릿 동기화** — 하위 프로젝트에서 발견한 좋은 패턴은 제안서로 올리고(upstream), 템플릿 변경은 전체 프로젝트에 일괄 반영합니다(downstream/broadcast). ([상세](docs/guide-template-management.md))
 
-## 프로젝트 구조
-
-```
-.claude/
-├── WORKFLOW.md              # 워크플로우 트리거 맵
-├── claude-code-features.md  # Commands, Hooks, Skills, Agent Teams 설명
-├── settings.json            # 전역 설정
-├── rules/                   # 모든 응답에 적용되는 행동 규칙
-├── commands/                # 재사용 프롬프트 템플릿
-├── hooks/                   # 라이프사이클 셸 스크립트
-├── skills/                  # 도메인별 capability 정의
-│   ├── tdd/                 # TDD 워크플로우
-│   ├── planning/            # 계획 수립
-│   ├── check/               # 코드 품질 검사
-│   ├── auto-fix/            # 린트/포맷 자동 수정
-│   ├── template-upstream/   # 패턴 제안 (프로젝트 -> 템플릿)
-│   ├── template-downstream/ # 설정 동기화 (템플릿 -> 프로젝트)
-│   ├── template-broadcast/  # 일괄 배포
-│   └── ...
-└── agents/                  # 전문 서브에이전트 정의
-```
+**빌딩 블록 조합** — Commands, Hooks, Skills, Agents 네 가지 Claude Code 기능을 `.claude/` 디렉토리 하나에 조합해서 프로젝트 행동을 정의합니다. ([상세](docs/guide-claude-code-features.md))
 
 ## 시작하기
 
@@ -58,7 +36,35 @@ Claude Code로 Python 프로젝트를 시작할 때 `.claude/` 설정을 매번 
     touch localdocs/worklog.todo.md localdocs/worklog.doing.md localdocs/worklog.done.md
     ```
 
-    > 필요시 `.claude/skills.nouse/localdocs-til-link` Skill을 `.claude/skills` 폴더로 이동시키고 이 localdocs를 통합 문서저장 폴더와 연결합니다.
+    > **참고:** 필요시 `.claude/skills.nouse/localdocs-til-link` Skill을 `.claude/skills` 폴더로 이동시키고 localdocs를 통합 문서 저장 폴더와 연결합니다.
 
 1. `CLAUDE.md`를 프로젝트에 맞게 수정합니다.
    `CLAUDE.sample.md`를 참고하면 됩니다.
+
+## 프로젝트 구조
+
+```
+.claude/
+├── WORKFLOW.md              # 워크플로우 트리거 맵
+├── claude-code-features.md  # Commands, Hooks, Skills, Agent Teams 설명
+├── settings.json            # 전역 설정
+├── rules/                   # 모든 응답에 적용되는 행동 규칙
+├── commands/                # 재사용 프롬프트 템플릿
+├── hooks/                   # 라이프사이클 셸 스크립트
+├── skills/                  # 도메인별 capability 정의
+│   ├── tdd/                 # TDD 워크플로우
+│   ├── planning/            # 계획 수립
+│   ├── check/               # 코드 품질 검사
+│   ├── auto-fix/            # 린트/포맷 자동 수정
+│   ├── template-upstream/   # 패턴 제안 (프로젝트 -> 템플릿)
+│   ├── template-downstream/ # 설정 동기화 (템플릿 -> 프로젝트)
+│   ├── template-broadcast/  # 일괄 배포
+│   └── ...
+└── agents/                  # 전문 서브에이전트 정의
+```
+
+## 더 알아보기
+
+- [워크플로우: 계획-구현-문서화-가드](docs/guide-workflow.md)
+- [템플릿 관리 skill](docs/guide-template-management.md)
+- [Claude Code 기능 소개](docs/guide-claude-code-features.md)
