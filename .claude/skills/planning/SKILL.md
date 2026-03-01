@@ -58,6 +58,42 @@ For significant work, maintain one long-term plan, worklog files, and a learning
                                        Keep learn files as reference
 ```
 
+## Phase 0: Pre-Implementation Interview
+
+Before breaking work into increments, you **MUST** verify that the requirements are implementation-ready. Use `AskUserQuestion` to probe for technical gray zones that surface only when you start thinking about *how* to build.
+
+**This phase catches the #1 source of wasted effort**: requirements that seemed clear during PRD but reveal ambiguity at implementation time.
+
+**When to run this interview:**
+- Always, before creating `localdocs/plan.<topic>.md`
+- Even if a PRD exists — PRDs cover *what*, this covers *how*
+
+**Interview Protocol:**
+
+1. **Read all available context first.** PRD, existing code, related docs. Form your own mental model before asking.
+2. **Ask questions the user hasn't thought about yet.** Don't repeat PRD questions. Focus on implementation-specific unknowns.
+3. **2-3 rounds minimum.** Each round should surface new concerns. Stop only when the user confirms no more unknowns.
+4. **Document answers in the plan file.** Captured decisions prevent future "wait, I thought we agreed..." moments.
+
+**Interview Dimensions (implementation-focused):**
+
+- **Data Shape**: What does the actual data look like? Sample inputs/outputs? Null/empty cases?
+- **State Transitions**: What states exist? What transitions are valid? What happens on invalid transitions?
+- **Error Scenarios**: What can go wrong? What does the user see? Retry? Fail silently? Alert?
+- **Performance Boundaries**: Expected data volume? Concurrent users? Acceptable latency?
+- **Existing Code Impact**: What existing behavior changes? What must NOT change?
+- **Testing Strategy**: How do we test this? What mocks are needed? What's hard to test?
+- **Deployment Concerns**: Feature flag? Migration needed? Backward compatibility?
+
+**Anti-Patterns:**
+
+- ❌ Skipping the interview because "the PRD is detailed enough"
+- ❌ Asking generic questions instead of project-specific ones
+- ❌ Starting increments before the user confirms "the approach makes sense"
+- ❌ Treating this as a formality — if answers don't change your plan, you asked the wrong questions
+
+---
+
 ## What Makes a "Known-Good Increment"
 
 Each step MUST:
@@ -290,6 +326,8 @@ git commit -m "chore: complete [feature], remove plan"
 ```
 START FEATURE
 │
+├─► Phase 0: Pre-implementation interview (AskUserQuestion)
+│   └─► Continue until no new unknowns emerge
 ├─► Create `localdocs/plan.<topic>.md` (get approval)
 ├─► worklog todo  ← each step from the plan
 ├─► worklog doing ← first step (do this immediately, without waiting to be asked)

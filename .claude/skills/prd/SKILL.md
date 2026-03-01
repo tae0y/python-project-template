@@ -24,15 +24,35 @@ Use this skill when:
 
 ## Operational Workflow
 
-### Phase 1: Discovery (The Interview)
+### Phase 1: Deep Discovery (The Interview)
 
-Before writing a single line of the PRD, you **MUST** interrogate the user to fill knowledge gaps. Do not assume context.
+Before writing a single line of the PRD, you **MUST** conduct an in-depth, multi-round interview with the user using `AskUserQuestion`. Do not assume context. Do not settle for surface-level answers.
 
-**Ask about:**
+**Interview Protocol:**
 
-- **The Core Problem**: Why are we building this now?
-- **Success Metrics**: How do we know it worked?
-- **Constraints**: Budget, tech stack, or deadline?
+1. **Start broad, then drill deep.** Begin with the core problem, then follow each answer with probing follow-ups that surface hidden assumptions, edge cases, and trade-offs.
+2. **Ask non-obvious questions.** Avoid generic checklist questions. Tailor each question to what the user just said. Challenge vague or contradictory statements.
+3. **Continue until saturation.** Keep interviewing until no new information emerges. Minimum 3 rounds of questions — more if the domain is complex or ambiguous.
+4. **Surface gray zones explicitly.** For every major feature or requirement, ask: "What happens when [unexpected scenario]?" and "What should we NOT do here?"
+
+**Interview Dimensions (cover all that apply):**
+
+- **The Core Problem**: Why now? What happens if we don't build this? Who suffers most?
+- **Success Metrics**: How do we know it worked? What's the minimum bar vs. aspirational target?
+- **User Context**: Who are the actual users? What are their current workarounds? What will frustrate them?
+- **Scope Boundaries**: What's explicitly out of scope? What adjacent features will users expect but we won't deliver?
+- **Edge Cases & Failure Modes**: What inputs or states break the happy path? What does graceful degradation look like?
+- **Trade-offs**: Speed vs. accuracy? Flexibility vs. simplicity? Build vs. buy?
+- **Constraints**: Budget, tech stack, timeline, team size, compliance requirements?
+- **Dependencies & Integration**: What existing systems does this touch? Who else needs to agree?
+- **Evolution**: How might requirements change in 3-6 months? What's the most likely pivot?
+
+**Anti-Patterns for Discovery:**
+
+- ❌ Asking all questions in one giant batch (overwhelms the user, loses follow-up depth)
+- ❌ Accepting "it should be fast" or "it should be easy" without pressing for numbers
+- ❌ Skipping edge cases because the user didn't mention them
+- ❌ Moving to Phase 2 before the user confirms "I think that covers it"
 
 ### Phase 2: Analysis & Scoping
 
