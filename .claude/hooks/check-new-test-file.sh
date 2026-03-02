@@ -1,5 +1,6 @@
 #!/bin/bash
-# Hook: PreToolUse — Warn when writing a new test_*.py file
+# Hook: PreToolUse — Warn (non-blocking) when writing a new test_*.py file
+# Prints a reminder checklist but allows file creation to proceed.
 # Pattern 2: No indirect solutions — never bypass the real function under test
 
 INPUT=$(cat)
@@ -32,4 +33,5 @@ A test that bypasses the real implementation is a false safety net:
 it passes while hiding actual bugs.
 EOF
 
-exit 2
+# exit 0: warn but allow — Claude Code treats exit 2 as hard block
+exit 0

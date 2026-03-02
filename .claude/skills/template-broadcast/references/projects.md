@@ -8,6 +8,7 @@ Projects that receive updates from `python-template` via `template-broadcast`.
 |---------|-----------|--------|
 | real-estate-mcp | `/Users/bachtaeyeong/10_SrcHub/real-estate-mcp` | https://github.com/tae0y/real-estate-mcp.git |
 | that-night-sky | `/Users/bachtaeyeong/10_SrcHub/that-night-sky` | https://github.com/tae0y/that-night-sky.git |
+| TIL | `/Users/bachtaeyeong/20_DocHub/TIL` | https://github.com/tae0y/TIL.git |
 
 ## Excluded
 
