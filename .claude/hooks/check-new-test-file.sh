@@ -1,6 +1,6 @@
 #!/bin/bash
-# Hook: PreToolUse — Warn (non-blocking) when writing a new test_*.py file
-# Prints a reminder checklist but allows file creation to proceed.
+# Hook: PreToolUse — Ask user confirmation when writing a new test_*.py file
+# Uses permissionDecision:"ask" to prompt the user before proceeding.
 # Pattern 2: No indirect solutions — never bypass the real function under test
 
 INPUT=$(cat)
@@ -21,17 +21,19 @@ if [[ -f "$FILE_PATH" ]]; then
   exit 0
 fi
 
-cat >&2 <<'EOF'
-[Hook] New test file creation detected.
-
-Before proceeding, confirm:
+REASON=$(cat <<'MSG'
+[Hook] New test file creation detected. Before approving, confirm:
 1. Are you importing and calling the real function under test?
 2. Have you avoided writing a separate dummy/stub that mimics its behavior?
 3. Does the test exercise the same execution path as production?
+A test that bypasses the real implementation is a false safety net: it passes while hiding actual bugs.
+MSG
+)
 
-A test that bypasses the real implementation is a false safety net:
-it passes while hiding actual bugs.
-EOF
-
-# exit 0: warn but allow — Claude Code treats exit 2 as hard block
-exit 0
+jq -n --arg reason "$REASON" '{
+  hookSpecificOutput: {
+    hookEventName: "PreToolUse",
+    permissionDecision: "ask",
+    permissionDecisionReason: $reason
+  }
+}'
