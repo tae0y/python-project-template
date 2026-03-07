@@ -7,8 +7,9 @@ description: Update .claude/, .mcp.json, and .pre-commit-config.yaml from the up
 
 Direction: Template → Project. Apply only the files that exist upstream to the current project.
 
-**Strategy: diff-aware update, not full overwrite.**
-- Files present upstream → update if content differs
+**Strategy: merge-aware update, not full overwrite.**
+- NEW files (upstream only) → copy as-is
+- CHANGED files (both exist, content differs) → **merge, not overwrite** (see Merge Rules below)
 - Files only in project → leave untouched (preserve project customizations)
 - Files removed from upstream → do not auto-delete; report to user only
 
@@ -43,6 +44,45 @@ After resolution, verify `$TEMPLATE_ROOT/.claude/` exists. Abort if not.
 - `env` block inside `.claude/settings.json` (project-specific env vars)
 - `localdocs/` (local-only, gitignored)
 - `.env*` (secrets)
+
+## Merge Rules
+
+For CHANGED files (file exists in both upstream and project with different content):
+
+### Structured files (`.mcp.json`, `settings.json`)
+
+Parse both as JSON. Merge keys:
+- Keys present only in upstream → add
+- Keys present only in project → **preserve** (project customization)
+- Keys present in both with different values → **use upstream value** but report the diff to the user
+
+For `settings.json`, never touch the `env` block — it is always project-specific.
+
+### YAML files (`.pre-commit-config.yaml`)
+
+Parse both as YAML. Merge entries:
+- Hooks/repos present only in upstream → add
+- Hooks/repos present only in project → **preserve**
+- Same hook with different config → **use upstream version** but report the diff
+
+### Markdown / text files (`.md`, `.sh`, etc.)
+
+Read both files. Compare content:
+- If the project file is **identical to a previous upstream version** (no project-specific edits) → replace with new upstream version
+- If the project file has **project-specific additions or modifications** → show a side-by-side diff to the user and ask:
+  - `(U)` Use upstream version (overwrite)
+  - `(P)` Keep project version (skip)
+  - `(M)` Manual merge — open diff for user to resolve
+
+Default to `(P)` if the user does not respond, to avoid data loss.
+
+### Files that are always overwritten (no merge)
+
+- `.claude/rules/*.md` — template rules are authoritative
+- `.claude/agents/*.md` — template agent configs are authoritative
+- `.claude/WORKFLOW.md` — template workflow is authoritative
+
+These files should not contain project-specific content. If a project needs custom rules, it should create separate files (e.g., `.claude/rules/project-specific.md`).
 
 ## Steps
 
@@ -122,33 +162,30 @@ N → cleanup and exit.
 
 ### 5. Apply updates
 
-Copy only NEW/CHANGED files. Skip `settings.local.json`.
-For `CHANGED (nouse)` files, copy to `skills.nouse/` instead of `skills/`.
+For each file in the update list, apply the appropriate strategy. Skip `settings.local.json`.
+For `CHANGED (nouse)` files, target `skills.nouse/` instead of `skills/`.
+
+**NEW files** → copy directly:
 
 ```bash
-for rel in $TO_UPDATE; do
-  [[ "$rel" == *"settings.local.json"* ]] && continue
-
-  # Determine source and destination
-  src="$TEMPLATE_ROOT/$rel"
-  if [[ "$rel" == .claude/skills.nouse/* ]]; then
-    # nouse target — source is under skills/, not skills.nouse/
-    src_rel="${rel/.claude\/skills.nouse\//.claude\/skills\/}"
-    src="$TEMPLATE_ROOT/$src_rel"
-  fi
-
-  mkdir -p "$(dirname "$PROJECT_ROOT/$rel")"
-  cp "$src" "$PROJECT_ROOT/$rel"
-done
-
-[ -f "$TEMPLATE_ROOT/.mcp.json" ] && \
-  ! diff -q "$TEMPLATE_ROOT/.mcp.json" "$PROJECT_ROOT/.mcp.json" > /dev/null 2>&1 && \
-  cp "$TEMPLATE_ROOT/.mcp.json" "$PROJECT_ROOT/.mcp.json"
-
-[ -f "$TEMPLATE_ROOT/.pre-commit-config.yaml" ] && \
-  ! diff -q "$TEMPLATE_ROOT/.pre-commit-config.yaml" "$PROJECT_ROOT/.pre-commit-config.yaml" > /dev/null 2>&1 && \
-  cp "$TEMPLATE_ROOT/.pre-commit-config.yaml" "$PROJECT_ROOT/.pre-commit-config.yaml"
+mkdir -p "$(dirname "$PROJECT_ROOT/$rel")"
+cp "$src" "$PROJECT_ROOT/$rel"
 ```
+
+**CHANGED files** → apply Merge Rules:
+
+1. Determine file type (JSON / YAML / always-overwrite / text)
+2. For JSON (`.mcp.json`, `settings.json`):
+   - Read both files, merge keys preserving project-only keys
+   - Write merged result
+3. For YAML (`.pre-commit-config.yaml`):
+   - Read both files, merge entries preserving project-only hooks/repos
+   - Write merged result
+4. For always-overwrite files (`.claude/rules/*.md`, `.claude/agents/*.md`, `.claude/WORKFLOW.md`):
+   - Copy upstream version directly
+5. For other text files (skills, hooks, etc.):
+   - Show diff to user, ask for `(U)pstream / (P)roject / (M)anual`
+   - Default to `(P)` — preserve project version to avoid data loss
 
 ### 6. Cleanup
 

@@ -10,8 +10,9 @@ The project registry is in [references/projects.md](references/projects.md) — 
 
 ## Strategy
 
-Same diff-aware update as `template-downstream`:
-- Only files present upstream are updated
+Same merge-aware update as `template-downstream`:
+- NEW files → copy as-is
+- CHANGED files → **merge, not overwrite** (see `template-downstream` Merge Rules)
 - Project-only files are preserved
 - No auto-delete
 
@@ -100,28 +101,16 @@ find "$TEMPLATE_ROOT/.claude" -type f | while read src; do
   fi
 done
 
-# Apply NEW/CHANGED only, skip settings.local.json
-# For CHANGED (nouse) files, copy to skills.nouse/ instead of skills/
-for rel in $TO_UPDATE; do
-  [[ "$rel" == *"settings.local.json"* ]] && continue
-
-  src="$TEMPLATE_ROOT/$rel"
-  if [[ "$rel" == .claude/skills.nouse/* ]]; then
-    src_rel="${rel/.claude\/skills.nouse\//.claude\/skills\/}"
-    src="$TEMPLATE_ROOT/$src_rel"
-  fi
-
-  mkdir -p "$(dirname "$PROJECT_ROOT/$rel")"
-  cp "$src" "$PROJECT_ROOT/$rel"
-done
-
-[ -f "$TEMPLATE_ROOT/.mcp.json" ] && \
-  ! diff -q "$TEMPLATE_ROOT/.mcp.json" "$PROJECT_ROOT/.mcp.json" > /dev/null 2>&1 && \
-  cp "$TEMPLATE_ROOT/.mcp.json" "$PROJECT_ROOT/.mcp.json"
-
-[ -f "$TEMPLATE_ROOT/.pre-commit-config.yaml" ] && \
-  ! diff -q "$TEMPLATE_ROOT/.pre-commit-config.yaml" "$PROJECT_ROOT/.pre-commit-config.yaml" > /dev/null 2>&1 && \
-  cp "$TEMPLATE_ROOT/.pre-commit-config.yaml" "$PROJECT_ROOT/.pre-commit-config.yaml"
+# Apply NEW/CHANGED using merge strategy (see template-downstream Merge Rules)
+# Skip settings.local.json
+# For CHANGED (nouse) files, target skills.nouse/ instead of skills/
+#
+# NEW files → cp directly
+# CHANGED files → merge by file type:
+#   - JSON (.mcp.json, settings.json) → merge keys, preserve project-only keys
+#   - YAML (.pre-commit-config.yaml) → merge entries, preserve project-only hooks
+#   - Always-overwrite (.claude/rules/*.md, agents/*.md, WORKFLOW.md) → cp directly
+#   - Other text (skills, hooks, etc.) → show diff, ask user (U/P/M), default P
 ```
 
 Report per-project result immediately after each:
