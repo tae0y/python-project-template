@@ -2,6 +2,21 @@
 
 These rules apply to all code-related tasks. They override default behavior where they conflict.
 
+## Task size classifier
+
+Classify each task before starting. The classification determines how much ceremony is required.
+
+| Size | Criteria | Plan | Worklog | TDD | Examples |
+|------|----------|------|---------|-----|----------|
+| **TRIVIAL** | Config-only, docs-only, dependency bump, typo fix | Skip | Skip | Skip | `.md` edits, `uv lock`, `.gitignore` |
+| **SMALL** | Single-file logic change, ≤ 20 lines changed | One-liner | Optional | Required | Bug fix, add validation, rename |
+| **STANDARD** | Multi-file, clear scope, ≤ 1 session | Brief plan | Required | Required | New endpoint, refactor module |
+| **LARGE** | Multi-session, architectural impact | Full plan + approval | Required | Required | New subsystem, migration |
+
+When in doubt, classify one level up.
+
+---
+
 ## Diagnose before fixing
 
 IMPORTANT: Identify the root cause before proposing any solution.

@@ -7,7 +7,7 @@ description: Test-Driven Development workflow. Use for ALL code changes - featur
 
 TDD is the fundamental practice. Every line of production code must be written in response to a failing test.
 
-**For how to write good tests**, load the `testing` skill. This skill focuses on the TDD workflow/process.
+This skill focuses on the TDD workflow/process.
 
 ---
 
@@ -38,9 +38,9 @@ Commit history should show clear RED → GREEN → REFACTOR progression.
 
 **Ideal progression:**
 ```
-commit abc123: test: add failing test for user authentication
-commit def456: feat: implement user authentication to pass test
-commit ghi789: refactor: extract validation logic for clarity
+commit abc123: [MAINTENANCE] Add failing test for user authentication
+commit def456: [NEW FEATURE] Implement user authentication to pass test
+commit ghi789: [MAINTENANCE] Extract validation logic for clarity
 ```
 
 ### Rare Exceptions
@@ -101,10 +101,7 @@ Test Evidence:
 
 2. Run coverage verification:
    ```bash
-   cd packages/core
-   pnpm test:coverage
-   # OR
-   pnpm exec vitest run --coverage
+   uv run pytest --cov --cov-report=term-missing
    ```
 
 3. Verify ALL metrics hit 100%:
@@ -115,22 +112,23 @@ Test Evidence:
 
 4. Check that tests are behavior-driven (not testing implementation details)
 
-**For anti-patterns that create fake coverage (coverage theater)**, see the `testing` skill.
+**Watch for anti-patterns that create fake coverage (coverage theater).**
 
 ### Reading Coverage Output
 
 Look for the "All files" line in coverage summary:
 
 ```
-File           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
----------------|---------|----------|---------|---------|-------------------
-All files      |     100 |      100 |     100 |     100 |
-setup.ts       |     100 |      100 |     100 |     100 |
-context.ts     |     100 |      100 |     100 |     100 |
-endpoints.ts   |     100 |      100 |     100 |     100 |
+Name              Stmts   Miss  Cover   Missing
+-------------------------------------------------
+src/models.py        42      0   100%
+src/services.py      38      0   100%
+src/utils.py         15      0   100%
+-------------------------------------------------
+TOTAL               95      0   100%
 ```
 
-✅ This is 100% coverage - all four metrics at 100%.
+✅ This is 100% coverage.
 
 ### Red Flags
 
@@ -139,70 +137,24 @@ Watch for these signs of incomplete coverage:
 ❌ **PR claims "100% coverage" but you haven't verified**
 - Never trust claims without running coverage yourself
 
-❌ **Coverage summary shows <100% on any metric**
+❌ **Coverage summary shows <100%**
 ```
-All files      |   97.11 |    93.97 |   81.81 |   97.11 |
+TOTAL               95      8    92%
 ```
-- This is NOT 100% coverage (Functions: 81.81%, Lines: 97.11%)
+- This is NOT 100% coverage
 
-❌ **"Uncovered Line #s" column shows line numbers**
+❌ **"Missing" column shows line numbers**
 ```
-setup.ts       |   95.23 |      100 |      60 |   95.23 | 45-48, 52-55
+src/services.py      38      5    87%   45-48, 52
 ```
-- Lines 45-48 and 52-55 are not covered
+- Lines 45-48 and 52 are not covered
 
-❌ **Coverage gaps without explicit exception documentation**
-- If coverage <100%, exception should be documented (see Exception Process below)
+❌ **Coverage gaps without exception documentation**
+- If coverage <100%, document the reason and get approval
 
 ### When Coverage Drops, Ask
 
-**"What business behavior am I not testing?"**
-
-NOT "What line am I missing?"
-
-Add tests for behavior, and coverage follows naturally.
-
----
-
-## 100% Coverage Exception Process
-
-### Default Rule: 100% Coverage Required
-
-No exceptions without explicit approval and documentation.
-
-### Requesting an Exception
-
-If 100% coverage cannot be achieved:
-
-**Step 1: Document in package README**
-
-Explain:
-- Current coverage metrics
-- WHY 100% cannot be achieved in this package
-- WHERE the missing coverage will come from (integration tests, E2E, etc.)
-
-**Step 2: Get explicit approval**
-
-From project maintainer or team lead
-
-**Step 3: Document in CLAUDE.md**
-
-Under "Test Coverage: 100% Required" section, list the exception
-
-**Example Exception:**
-
-```markdown
-## Current Exceptions
-
-- **Next.js Adapter**: 86% function coverage
-  - Documented in `/packages/nextjs-adapter/README.md`
-  - Missing coverage from SSR functions (tested in E2E layer)
-  - Approved: 2024-11-15
-```
-
-### Remember
-
-The burden of proof is on the requester. 100% is the default expectation.
+**"What business behavior am I not testing?"** — not "What line am I missing?"
 
 ---
 
@@ -210,54 +162,32 @@ The burden of proof is on the requester. 100% is the default expectation.
 
 ### Adding a New Feature
 
-1. **Write failing test** - describe expected behavior
-2. **Run test** - confirm it fails (`pnpm test:watch`)
-3. **Implement minimum** - just enough to pass
-4. **Run test** - confirm it passes
-5. **Refactor if valuable** - improve code structure
-6. **Commit** - with conventional commit message
+1. **Write failing test** — describe expected behavior
+2. **Run test** — confirm it fails (`uv run pytest`)
+3. **Implement minimum** — just enough to pass
+4. **Run test** — confirm it passes
+5. **Refactor if valuable** — improve code structure
+6. **Commit** — following project commit convention
 
 ### Workflow Example
 
-```bash
+```python
 # 1. Write failing test
-it('should reject empty user names', () => {
-  const result = createUser({ id: 'user-123', name: '' });
-  expect(result.success).toBe(false);
-}); # ❌ Test fails (no implementation)
+def test_reject_empty_user_names():
+    result = create_user(id="user-123", name="")
+    assert result.success is False  # ❌ Test fails (no implementation)
 
 # 2. Implement minimum code
-if (user.name === '') {
-  return { success: false, error: 'Name required' };
-} # ✅ Test passes
+def create_user(id: str, name: str) -> CreateUserResult:
+    if not name:
+        return CreateUserResult(success=False, error="Name required")
+    ...  # ✅ Test passes
 
 # 3. Refactor if needed (extract validation, improve naming)
 
 # 4. Commit
-git add .
-git commit -m "feat: reject empty user names"
+# git add . && git commit -m "[NEW FEATURE] Reject empty user names"
 ```
-
----
-
-## Commit Messages
-
-Use conventional commits format:
-
-```
-feat: add user role-based permissions
-fix: correct email validation regex
-refactor: extract user validation logic
-test: add edge cases for permission checks
-docs: update architecture documentation
-```
-
-**Format:**
-- `feat:` - New feature
-- `fix:` - Bug fix
-- `refactor:` - Code change that neither fixes bug nor adds feature
-- `test:` - Adding or updating tests
-- `docs:` - Documentation changes
 
 ---
 
@@ -270,31 +200,6 @@ Before submitting PR:
 - [ ] **Coverage verification REQUIRED** - claims must be verified before review/approval
 - [ ] PRs focused on single feature or fix
 - [ ] Include behavior description (not implementation details)
-
-**Example PR Description:**
-
-```markdown
-## Summary
-
-Adds support for user role-based permissions with configurable access levels.
-
-## Behavior Changes
-
-- Users can now have multiple roles with fine-grained permissions
-- Permission check via `hasPermission(user, resource, action)`
-- Default role assigned if not specified
-
-## Test Evidence
-
-✅ 42/42 tests passing
-✅ 100% coverage verified (see coverage report)
-
-## TDD Evidence
-
-RED: commit 4a3b2c1 (failing tests for permission system)
-GREEN: commit 5d4e3f2 (implementation)
-REFACTOR: commit 6e5f4a3 (extract permission resolution logic)
-```
 
 ---
 
@@ -318,14 +223,13 @@ For detailed refactoring methodology, load the `refactoring` skill.
 - ❌ Writing production code without failing test
 - ❌ Testing implementation details (spies on internal methods)
 - ❌ 1:1 mapping between test files and implementation files
-- ❌ Using `let`/`beforeEach` for test data
+- ❌ Using mutable module-level state or fixtures for shared test data
 - ❌ Trusting coverage claims without verification
 - ❌ Mocking the function being tested
 - ❌ Redefining schemas in test files
 - ❌ Factories returning partial/incomplete objects
 - ❌ Speculative code ("just in case" logic without tests)
 
-**For detailed testing anti-patterns**, load the `testing` skill.
 
 ---
 
@@ -337,7 +241,7 @@ Before marking work complete:
 - [ ] Commit history shows TDD evidence (or documented exception)
 - [ ] All tests pass
 - [ ] Coverage verified at 100% (or exception documented)
-- [ ] Test factories used (no `let`/`beforeEach`)
+- [ ] Test factories used (no shared mutable state)
 - [ ] Tests verify behavior (not implementation details)
 - [ ] Refactoring assessed and applied if valuable
-- [ ] Conventional commit messages used
+- [ ] Commit messages follow project convention (see `commit-convention.md`)

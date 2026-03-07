@@ -1,6 +1,6 @@
 # Document Management
 
-Project documents live in `localdocs/` and follow strict naming conventions. Skills like `status` and `next` rely on these patterns via glob — breaking the convention breaks those skills.
+Project documents live in `localdocs/` and follow strict naming conventions. The `worklog` skill and `progress-guardian` agent rely on these patterns via glob — breaking the convention breaks those components.
 
 ## File Naming Rules
 
@@ -35,3 +35,9 @@ touch localdocs/worklog.todo.md localdocs/worklog.doing.md localdocs/worklog.don
 ```
 
 Seed the worklog files with a `# Worklog` heading before first use. Skills that read these files expect them to exist.
+
+## Knowledge Store Precedence
+
+- **During work** — write to `localdocs/learn.*.md` (local, not committed)
+- **At feature end** — merge to `CLAUDE.md` via `learn` agent
+- **Auto memory** (`~/.claude/projects/`) — cross-project patterns only; never store project-specific knowledge here

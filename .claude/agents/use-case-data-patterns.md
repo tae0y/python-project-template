@@ -9,7 +9,7 @@ description: >
   user: "I need to add functionality where users can view and filter a list of items by date range and category"
   main-agent: "Let me analyze the existing data patterns for this use case."
   <commentary>
-  Since we're implementing a new feature, we should understand existing patterns first. Use the Task tool to launch the use-case-data-patterns agent to identify relevant data access patterns.
+  Since we're implementing a new feature, we should understand existing patterns first. Use the Agent tool to launch the use-case-data-patterns agent to identify relevant data access patterns.
   </commentary>
   main-agent: "I'm going to use the use-case-data-patterns agent to examine how this use case maps to our current data architecture and identify any gaps."
   </example>

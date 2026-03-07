@@ -83,12 +83,12 @@ Must be directly requested by the user or Claude.
 | `auto-fix` skill | "apply auto-fix" or auto before commit | After `check` |
 | `audit` skill | "run audit" | After new dependency added; monthly |
 | `/project:resume-work` command | Type directly | When resuming a session |
-| `tdd-guardian` agent | Spawn via Task tool | When TDD compliance verification needed |
-| `refactor-scan` agent | Spawn via Task tool | After GREEN, for deep refactoring assessment |
-| `learn` agent | Spawn via Task tool | After feature complete, to merge knowledge |
-| `adr` agent | Spawn via Task tool | When architectural decision needs recording |
-| `docs-guardian` agent | Spawn via Task tool | When permanent docs need creation/improvement |
-| `use-case-data-patterns` agent | Spawn via Task tool | When analyzing data patterns for new feature |
+| `tdd-guardian` agent | Spawn via Agent tool | When TDD compliance verification needed |
+| `refactor-scan` agent | Spawn via Agent tool | After GREEN, for deep refactoring assessment |
+| `learn` agent | Spawn via Agent tool | After feature complete, to merge knowledge |
+| `adr` agent | Spawn via Agent tool | When architectural decision needs recording |
+| `docs-guardian` agent | Spawn via Agent tool | When permanent docs need creation/improvement |
+| `use-case-data-patterns` agent | Spawn via Agent tool | When analyzing data patterns for new feature |
 
 ---
 

@@ -23,7 +23,25 @@
             "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/check-external-lib-usage.sh"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/check-pre-commit-gate.sh"
+          },
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/check-commit-convention.sh"
+          }
+        ]
       }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git add .claude/README.md .claude/WORKFLOW.md .claude/agents/README.md .claude/agents/use-case-data-patterns.md .claude/rules/coding-guidelines.md .claude/rules/document-management.md .claude/settings.json .claude/skills.nouse/README.md .claude/skills/planning/SKILL.md .claude/skills/tdd/SKILL.md .claude/hooks/check-commit-convention.sh .claude/hooks/check-pre-commit-gate.sh)"
     ]
   }
 }

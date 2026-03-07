@@ -123,7 +123,7 @@ Each step MUST:
 
 ## TDD Integration
 
-**Every step follows RED-GREEN-REFACTOR.** See `testing` skill for factory patterns.
+**Every step follows RED-GREEN-REFACTOR.**
 
 ```
 FOR EACH STEP:
@@ -260,40 +260,9 @@ Don't wait until the end. When you discover something:
 
 When all steps are complete:
 
-### 1. Verify Completion
-
-- All acceptance criteria met
-- All tests passing
-- All steps marked complete in `localdocs/worklog.doing.md`
-
-### 2. Merge Learnings (if any)
-
-Use `localdocs/learn.<topic>.md` as the source for knowledge merge (`learn`/`adr`):
-
-| Learning Type | Destination | Method |
-|---------------|-------------|--------|
-| Gotchas | CLAUDE.md | Use `learn` agent |
-| Patterns | CLAUDE.md | Use `learn` agent |
-| Architectural decisions | ADR | Use `adr` agent |
-| Domain knowledge | Project docs | Direct update |
-
-### 3. Close Plan
-
-After learnings are merged, remove only the plan file (learn files stay as reference):
-
-```bash
-rm localdocs/plan.feature.md
-git add -A
-git commit -m "chore: complete [feature], remove plan"
-```
-
-**The knowledge lives on in:**
-- CLAUDE.md (gotchas, patterns — merged from learn files)
-- ADRs (architectural decisions)
-- `localdocs/learn.<topic>.md` (original learning notes, kept for reference)
-- `localdocs/worklog.done.md` (execution history)
-- Git history (what was done)
-- Project docs (if applicable)
+1. Verify all acceptance criteria met and tests passing
+2. Merge learnings: `learn` agent (gotchas/patterns → CLAUDE.md), `adr` agent (decisions → ADR)
+3. Remove only `localdocs/plan.<topic>.md` (keep worklog and learn files)
 
 ## Anti-Patterns
 
