@@ -1,6 +1,6 @@
 # Claude Code Python Template
 
-![](resources/to_mars.png)
+![https://youtu.be/qMQ-y9dHE2k?si=Uau0_ezqGpwATL6m](resources/to_mars.png)
 > A repo built on this template, heading to Mars.
 
 A reusable `.claude/` configuration template for Claude Code Python projects. It enables fast, accurate prototyping and establishes a self-improvement loop grounded in documentation and evidence.
