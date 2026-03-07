@@ -80,7 +80,20 @@ PROJECT_ROOT="<local_path>"
 find "$TEMPLATE_ROOT/.claude" -type f | while read src; do
   rel="${src#$TEMPLATE_ROOT/}"
   dst="$PROJECT_ROOT/$rel"
-  if [ ! -f "$dst" ]; then
+
+  # If upstream file is under skills/, check if project moved it to skills.nouse/
+  nouse_dst=""
+  if [[ "$rel" == .claude/skills/* ]]; then
+    nouse_rel="${rel/.claude\/skills\//.claude\/skills.nouse\/}"
+    nouse_dst="$PROJECT_ROOT/$nouse_rel"
+  fi
+
+  if [ -n "$nouse_dst" ] && [ -f "$nouse_dst" ]; then
+    # Project disabled this skill — update nouse copy instead
+    if ! diff -q "$src" "$nouse_dst" > /dev/null 2>&1; then
+      echo "CHANGED (nouse): $nouse_rel"
+    fi
+  elif [ ! -f "$dst" ]; then
     echo "NEW: $rel"
   elif ! diff -q "$src" "$dst" > /dev/null 2>&1; then
     echo "CHANGED: $rel"
@@ -88,10 +101,18 @@ find "$TEMPLATE_ROOT/.claude" -type f | while read src; do
 done
 
 # Apply NEW/CHANGED only, skip settings.local.json
+# For CHANGED (nouse) files, copy to skills.nouse/ instead of skills/
 for rel in $TO_UPDATE; do
   [[ "$rel" == *"settings.local.json"* ]] && continue
+
+  src="$TEMPLATE_ROOT/$rel"
+  if [[ "$rel" == .claude/skills.nouse/* ]]; then
+    src_rel="${rel/.claude\/skills.nouse\//.claude\/skills\/}"
+    src="$TEMPLATE_ROOT/$src_rel"
+  fi
+
   mkdir -p "$(dirname "$PROJECT_ROOT/$rel")"
-  cp "$TEMPLATE_ROOT/$rel" "$PROJECT_ROOT/$rel"
+  cp "$src" "$PROJECT_ROOT/$rel"
 done
 
 [ -f "$TEMPLATE_ROOT/.mcp.json" ] && \
@@ -107,9 +128,10 @@ Report per-project result immediately after each:
 
 ```
 [1/3] real-estate-mcp
-  CHANGED: .claude/rules/coding-guidelines.md
-  NEW:     .claude/skills/template-downstream/SKILL.md
-  unchanged: 14 files
+  CHANGED:        .claude/rules/coding-guidelines.md
+  NEW:            .claude/skills/template-downstream/SKILL.md
+  CHANGED (nouse): .claude/skills.nouse/tdd/SKILL.md  ← disabled by project, updating nouse copy
+  unchanged: 13 files
   Done.
 
 [2/3] claude-usage-menubar
