@@ -1,5 +1,6 @@
 # Local files
 localdocs/
+localdocs
 .arxiv/
 .coverage
 AGENTS.md

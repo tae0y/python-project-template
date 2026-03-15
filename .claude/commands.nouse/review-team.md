@@ -20,7 +20,7 @@ Round 1: Each teammate posts their independent analysis to the shared task list.
 Round 2: Teammates respond directly to each other. CFO must challenge Evangelist. Prompt Engineer must respond to New Member's confusion points.
 Round 3: Converge. Each teammate proposes exactly one highest-priority fix. Resolve conflicts through direct messaging.
 
-Final output: Lead synthesizes findings and saves the full report to review/YYYYMMDD/review-YYYYMMDD.md (use today's date).
+Final output: Lead synthesizes findings and saves the full report to localdocs/review/YYYYMMDD/review-YYYYMMDD.md (use today's date).
 The report must include:
 - Prioritized action list (with owner persona per item)
 - Unresolved disagreements with explicit trade-off statements
