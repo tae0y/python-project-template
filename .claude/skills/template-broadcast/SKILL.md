@@ -26,32 +26,65 @@ Read `references/projects.md` to get the list of active downstream projects and 
 
 ### 2. Pre-flight check for each project
 
-For each project in the registry, verify:
+Check each project with **separate Bash calls** (not a for loop) to avoid shell environment issues:
 
 ```bash
-# Project directory exists
-[ -d "<local_path>" ] || echo "MISSING: <project>"
-
-# No uncommitted changes
-git -C "<local_path>" diff --quiet && git -C "<local_path>" diff --cached --quiet \
-  || echo "DIRTY: <project> — has uncommitted changes"
+# Run separately per project — do NOT chain in a loop
+git -C "<local_path>" status --porcelain
 ```
+
+Classify each project:
+
+| Result | Status | Meaning |
+|--------|--------|---------|
+| directory missing | **MISSING** | skip |
+| staged or unstaged tracked changes | **DIRTY** | skip by default |
+| only untracked files (`??` lines only) | **WARN** | proceed, but note untracked files |
+| clean | **OK** | proceed |
+
+DIRTY vs WARN distinction matters: untracked files don't risk conflicts, so WARN projects can proceed safely. Only truly modified/staged files warrant a skip.
 
 Report pre-flight results before proceeding:
 
 ```
 Pre-flight:
   real-estate-mcp         OK
-  that-night-sky          DIRTY — uncommitted changes, will skip
-  claude-usage-menubar    OK
+  that-night-sky          WARN — untracked files only (safe to proceed)
+  claude-usage-menubar    DIRTY — modified: src/foo.py, will skip
   open-chat-playground    MISSING — directory not found, will skip
   claude-real-estate-openapi OK
 ```
 
+#### Skills conflict detection
+
+For each OK/WARN project, also check if any skill exists in **both** `skills/` and `skills.nouse/`:
+
+```bash
+# Find skill names present in both locations
+comm -12 \
+  <(ls "<project>/.claude/skills/" 2>/dev/null | sort) \
+  <(ls "<project>/.claude/skills.nouse/" 2>/dev/null | sort)
+```
+
+If any conflicts are found, report them and ask the user to decide before proceeding:
+
+```
+Conflict detected in real-estate-mcp — skill exists in both skills/ and skills.nouse/:
+  - skill-creator
+  - template-broadcast
+
+How should these be handled?
+  A) skills/ wins → keep active, delete nouse copy
+  B) skills.nouse/ wins → update nouse copy, delete active
+  C) Decide individually → list each one
+```
+
+Wait for the user's answer before applying any changes to that project.
+
 Ask the user to confirm before applying:
 
 ```
-Proceed with OK projects? (Y/N)
+Proceed with OK/WARN projects? (Y/N)
 ```
 
 ### 3. Resolve TEMPLATE_ROOT once
@@ -160,6 +193,8 @@ Do not commit in any project. Leave all changes unstaged for per-project review.
 | Situation | Action |
 |-----------|--------|
 | Project directory missing | Skip, report MISSING, continue |
-| Uncommitted changes in project | Skip, report DIRTY, continue |
+| Only untracked files in project | Proceed, report WARN, continue |
+| Tracked modifications or staged changes | Skip, report DIRTY, continue |
+| skills/ and skills.nouse/ conflict | Pause, ask user for resolution before applying |
 | File copy fails | Report error for that file, continue with remaining files |
 | TEMPLATE_ROOT not resolvable | Abort entire broadcast |
