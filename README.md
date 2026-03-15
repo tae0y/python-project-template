@@ -7,12 +7,16 @@ A reusable `.claude/` configuration template for Claude Code Python projects. It
 
 ## Core Features
 
-**Bidirectional template sync** — Keep downstream projects and this template in sync. When a downstream project discovers a useful pattern, it can propose changes upstream; the template consolidates and broadcasts updates back to all projects.
+🔄 **Bidirectional template sync** — Keep downstream projects and this template in sync. When a downstream project discovers a useful pattern, it can propose changes upstream; the template consolidates and broadcasts updates back to all projects.
 
-**Automated workflow** — An end-to-end workflow that covers planning, implementation, and verification. At each stage it autonomously produces feature specs, technical trade-off analyses, and lessons-learned documents.
+📝 **Documentation-driven self-improvement loop** — Every stage of development — planning, implementation, review, and retrospective — produces structured documents (ADRs, lessons-learned, trade-off analyses). These documents serve as the shared memory that lets both the human and the AI agent improve their own workflow over time: revisiting past decisions, correcting recurring mistakes, and refining the process itself based on evidence rather than intuition.
+
+💡 **Creative and analytical thinking skills** — Beyond code generation, the template ships skills that reframe hard problems through structured thinking frameworks: `rethink-unblock` breaks circular reasoning with targeted reframing, `davinci-define` applies the seven Da Vincian principles to clarify goals and life choices, and `sparks-create` uses the 13 tools from *Sparks of Genius* to generate cross-disciplinary creative angles. Use these when conventional analysis stalls.
+
+🛡️ **Python quality pipeline** — A pre-commit pipeline enforces Python conventions on every commit: `ruff` for linting and formatting, `bandit` for security scanning, and `pip-audit` for dependency vulnerability checks. The `check` skill runs all gates in read-only mode for inspection; `auto-fix` applies safe automated fixes.
 
 > This workflow originated from [citypaul/.dotfiles](https://github.com/citypaul/.dotfiles).
-> For details, see [Workflow: Plan-Implement-Document-Guard](docs/guide-workflow.md) and [Template Management Skill](docs/guide-template-management.md).
+> For details, see [Workflow: Plan-Implement-Document-Guard](docs/guide-development-workflow.md) and [Template Management Skill](docs/guide-template-management.md).
 
 ## Getting Started
 
@@ -51,19 +55,20 @@ A reusable `.claude/` configuration template for Claude Code Python projects. It
     ```
     .claude/
     ├── WORKFLOW.md              # Workflow trigger map
-    ├── claude-code-features.md  # .claude feature reference
     ├── settings.json            # Global settings
     ├── rules/                   # Behavioral rules applied to every response
     ├── commands/                # Reusable prompt templates
-    ├── hooks/                   # Lifecycle shell scripts
+    ├── hooks/                   # Lifecycle shell scripts (pre-commit gate, convention checks)
     ├── skills/                  # Domain-specific capability definitions
     │   ├── tdd/                 # TDD workflow
-    │   ├── planning/            # Planning
-    │   ├── check/               # Code quality checks
+    │   ├── planning/            # Task breakdown into known-good increments
+    │   ├── check/               # Code quality inspection (ruff, pyright, bandit)
     │   ├── auto-fix/            # Lint & format auto-fix
-    │   ├── template-upstream/   # Propose patterns (project → template)
-    │   ├── template-downstream/ # Sync settings (template → project)
-    │   ├── template-broadcast/  # Batch rollout
+    │   ├── rethink-unblock/     # Reframe stuck problems
+    │   ├── davinci-define/      # Da Vincian principles for goal clarity
+    │   ├── sparks-create/       # Cross-disciplinary creative thinking
+    │   ├── template-broadcast/  # Batch rollout to all downstream projects
     │   └── ...
+    ├── skills.nouse/            # Disabled skills (preserved for re-activation)
     └── agents/                  # Specialized sub-agent definitions
     ```
