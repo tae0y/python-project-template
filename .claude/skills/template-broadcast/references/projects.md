@@ -10,6 +10,7 @@ Projects that receive updates from `python-template` via `template-broadcast`.
 | that-night-sky | `/Users/bachtaeyeong/10_SrcHub/that-night-sky` | https://github.com/tae0y/that-night-sky.git |
 | TIL | `/Users/bachtaeyeong/20_DocHub/TIL` | https://github.com/tae0y/TIL.git |
 | passage-of-time-mcp | `/Users/bachtaeyeong/10_SrcHub/passage-of-time-mcp-extended` | https://github.com/tae0y/passage-of-time-mcp-extended.git |
+| ha-kakaomap-bus-extended | `/Users/bachtaeyeong/10_SrcHub/ha-kakaomap-bus-extended` | — |
 
 
 ## Excluded
@@ -18,6 +19,7 @@ Projects that receive updates from `python-template` via `template-broadcast`.
 |---------|--------|
 | `python-template` | Source of truth — never a downstream target |
 | `real-estate-mcp-original` | Archive/reference copy — do not modify |
+| `claude-usage-menubar` | a project based on swift |
 
 ## Updating This List
 
