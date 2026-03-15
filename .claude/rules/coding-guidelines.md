@@ -23,6 +23,24 @@ IMPORTANT: Identify the root cause before proposing any solution.
 
 State the observed symptom, your root-cause hypothesis, and how you will verify it — in that order. If the cause is unclear, investigate first. Do not write code until the cause is understood.
 
+## Design document before implementing
+
+For STANDARD or LARGE tasks, create `localdocs/plan.<topic>.md` **before writing any code**. The plan must exist and be approved before implementation starts.
+
+Minimum plan structure:
+
+```
+# Plan: [Feature Name]
+## Purpose
+[One sentence]
+## Stage
+[ ] SPIKE  [ ] MVP  [ ] PRODUCTION
+## Endpoints / Interface (if applicable)
+## Open Questions
+```
+
+Do not proceed to implementation until the user confirms the plan. If the plan changes mid-task, update the document and get re-approval before continuing.
+
 ## Plan before implementing
 
 For any change beyond a one-line fix, state a brief plan with verifiable checkpoints before writing code:

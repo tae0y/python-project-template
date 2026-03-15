@@ -54,9 +54,33 @@ Before writing a single line of the PRD, you **MUST** conduct an in-depth, multi
 - ❌ Skipping edge cases because the user didn't mention them
 - ❌ Moving to Phase 2 before the user confirms "I think that covers it"
 
+### Phase 1.5: Technical Feasibility Research
+
+Before drafting, verify that key technical assumptions actually hold. **Do not rely on training knowledge alone** — use WebSearch to check official docs, changelogs, and known compatibility issues.
+
+**When to run this phase:**
+- Any time the PRD involves an external API, third-party service, or library
+- When the tech stack has version constraints or ecosystem compatibility concerns
+- When the user hasn't specified a tech stack (research viable options before proposing)
+
+**Research Checklist:**
+- [ ] **External APIs**: Confirm endpoint availability, auth method, rate limits, and known breaking changes
+- [ ] **Client/Platform Compatibility**: Does this work across all target clients (web, mobile, desktop, CLI)?
+- [ ] **Library/Framework Versions**: Are the required features available in the project's current version?
+- [ ] **Known Failure Patterns**: Search for "[library] [feature] issues" to surface gotchas before coding
+
+**Output**: Add a `## Technical Feasibility` section to the PRD that lists:
+- Verified assumptions (with source)
+- Unverified assumptions (flagged as `TBD — verify before planning`)
+- Identified risks with mitigation options
+
+**Anti-Patterns:**
+- ❌ Assuming Claude's training knowledge is current for fast-moving ecosystems (OAuth flows, mobile browser behavior, API schemas)
+- ❌ Skipping this phase because "it's a well-known library" — that's exactly when hidden version gaps appear
+
 ### Phase 2: Analysis & Scoping
 
-Synthesize the user's input. Identify dependencies and hidden complexities.
+Synthesize the user's input and feasibility findings. Identify dependencies and hidden complexities.
 
 - Map out the **User Flow**.
 - Define **Non-Goals** to protect the timeline.
@@ -108,7 +132,13 @@ You **MUST** follow this exact structure for the output:
 - **Tool Requirements**: What tools and APIs are needed?
 - **Evaluation Strategy**: How to measure output quality and accuracy.
 
-### 4. Technical Specifications
+### 4. Technical Feasibility
+
+- **Verified Assumptions**: What was confirmed via research (cite source).
+- **Unverified Assumptions**: Flagged as `TBD — verify before planning`.
+- **Compatibility Risks**: Client/platform/version gaps found during Phase 1.5.
+
+### 5. Technical Specifications
 
 - **Architecture Overview**: Data flow and component interaction.
 - **Integration Points**: APIs, DBs, and Auth.

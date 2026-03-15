@@ -1,5 +1,5 @@
 ---
-name: rethink
+name: rethink-unblock
 description: Break out of a stuck approach by reframing a technical problem through structured thinking frameworks. Use when blocked, going in circles, or when a fresh perspective is needed on architecture, design, or debugging.
 user-invocable: true
 ---

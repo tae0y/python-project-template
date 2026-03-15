@@ -60,9 +60,50 @@ For significant work, maintain one long-term plan, worklog files, and a learning
 
 ## Phase 0: Pre-Implementation Interview
 
-Before breaking work into increments, you **MUST** verify that the requirements are implementation-ready. Use `AskUserQuestion` to probe for technical gray zones that surface only when you start thinking about *how* to build.
+Before breaking work into increments, you **MUST** complete three steps in order: declare the work stage, verify technical assumptions, then probe for implementation unknowns.
 
-**This phase catches the #1 source of wasted effort**: requirements that seemed clear during PRD but reveal ambiguity at implementation time.
+**This phase catches two sources of wasted effort:**
+1. Requirements that seemed clear during PRD but reveal ambiguity at implementation time
+2. Technical assumptions (compatibility, API behavior) that turn out to be wrong mid-implementation
+
+### Step 0-A: Declare the Work Stage
+
+Ask the user to declare the stage before anything else. If already stated, confirm it.
+
+| Stage | Plan depth | Code quality | Exit criteria |
+|-------|-----------|--------------|---------------|
+| **SPIKE** | Hypothesis + exit criteria only | Working only | Hypothesis pass/fail confirmed |
+| **MVP** | Core flow + key edge cases | Basic test coverage | Core user scenario passes |
+| **PROD** | Full spec (clients, compatibility) | TDD + docs | Deployable quality |
+
+**If stage is SPIKE:**
+- Capture: "Hypothesis: [what we're testing]" and "Exit criteria: [what pass/fail looks like]"
+- Add `# SPIKE: [hypothesis] — delete after validation` comment to all SPIKE code
+- SPIKE code must NOT be promoted to PROD directly — rewrite at MVP stage
+
+**If no stage is declared, default to PROD.**
+
+### Step 0-B: Technical Feasibility Check
+
+Before the interview, use WebSearch to verify any external dependency the plan will rely on. **Do not rely on training knowledge for fast-moving ecosystems.**
+
+**Always verify when the work involves:**
+- External APIs or third-party services → confirm auth method, endpoint schema, rate limits
+- Multiple clients or platforms → confirm compatibility across all targets (web/mobile/desktop/CLI)
+- Library or framework features → confirm the feature exists in the project's current version
+- Known-tricky domains → search "[library] [feature] issues [year]" to surface gotchas
+
+**Output**: Before the interview begins, state:
+```
+Verified: [what was confirmed via search, with source]
+Unverified / TBD: [what couldn't be confirmed — flag as risk in plan]
+```
+
+If verification reveals a blocker or significant risk, surface it before proceeding to the interview.
+
+### Step 0-C: Implementation Interview
+
+With stage declared and technical assumptions verified, probe for implementation-specific unknowns. Use `AskUserQuestion`.
 
 **When to run this interview:**
 - Always, before creating `localdocs/plan.<topic>.md`
@@ -91,6 +132,8 @@ Before breaking work into increments, you **MUST** verify that the requirements 
 - ❌ Asking generic questions instead of project-specific ones
 - ❌ Starting increments before the user confirms "the approach makes sense"
 - ❌ Treating this as a formality — if answers don't change your plan, you asked the wrong questions
+- ❌ Skipping Step 0-B because "it's a well-known library" — that's exactly when version gaps appear
+- ❌ Promoting SPIKE code to PROD without rewriting at MVP stage
 
 ---
 
@@ -295,7 +338,11 @@ When all steps are complete:
 ```
 START FEATURE
 │
-├─► Phase 0: Pre-implementation interview (AskUserQuestion)
+├─► Phase 0-A: Declare stage (SPIKE / MVP / PROD)
+│   └─► If SPIKE: capture hypothesis + exit criteria
+├─► Phase 0-B: Technical feasibility check (WebSearch)
+│   └─► State verified / unverified assumptions before proceeding
+├─► Phase 0-C: Pre-implementation interview (AskUserQuestion)
 │   └─► Continue until no new unknowns emerge
 ├─► Create `localdocs/plan.<topic>.md` (get approval)
 ├─► worklog todo  ← each step from the plan
