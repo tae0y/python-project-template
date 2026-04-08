@@ -10,7 +10,8 @@ Projects that receive updates from `python-template` via `template-broadcast`.
 | that-night-sky | `/Users/bachtaeyeong/10_SrcHub/that-night-sky` | https://github.com/tae0y/that-night-sky.git |
 | TIL | `/Users/bachtaeyeong/20_DocHub/TIL` | https://github.com/tae0y/TIL.git |
 | passage-of-time-mcp | `/Users/bachtaeyeong/10_SrcHub/passage-of-time-mcp-extended` | https://github.com/tae0y/passage-of-time-mcp-extended.git |
-| lets-go-out-mcp | `/Users/bachtaeyeong/10_SrcHub/lets-go-out-mcp/README.md` | |
+| lets-go-out-mcp | `/Users/bachtaeyeong/10_SrcHub/lets-go-out-mcp` | |
+| claude-usage-dashboard | `/Users/bachtaeyeong/10_SrcHub/claude-usage-dashboard` | |
 
 
 ## Excluded
