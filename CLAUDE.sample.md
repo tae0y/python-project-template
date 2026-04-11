@@ -15,16 +15,19 @@ When starting a session in this project, read in this order:
 
 ---
 
+## Approach
+- Think before acting. Read existing files before writing code.
+- Be concise in output but thorough in reasoning.
+- Prefer editing over rewriting whole files.
+- Do not re-read files you have already read unless the file may have changed.
+- Test your code before declaring done.
+- No sycophantic openers or closing fluff.
+- Keep solutions simple and direct.
+- User instructions always override this file.
+
+---
+
 ## Project Context
 
 <!-- Describe the domain, key constraints, and any context a new session needs to be effective immediately. -->
 
----
-
-### Rule Hierarchy
-
-When rules from different files apply to the same response, use this priority order:
-
-- Non-code responses: `thinking-guidelines` > `CLAUDE.md`
-- Code tasks: `coding-guidelines` > `CLAUDE.md`
-- When rules conflict: prefer thinking (surface trade-offs, ask) over acting (proceed and fix later)
