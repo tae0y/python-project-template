@@ -1,0 +1,148 @@
+{
+  "recommendations": [
+    // MY OWN
+    // Claude Code Bundle
+    "anthropic.claude-code",
+    "dnrm.claude-theme",
+    "lumidew.claude-color-theme",
+
+    // Markdown All in one
+    "bierner.github-markdown-preview",
+    "bierner.markdown-checkbox",
+    "bierner.markdown-emoji",
+    "bierner.markdown-footnotes",
+    "bierner.markdown-mermaid",
+    "bierner.markdown-preview-github-styles",
+    "bierner.markdown-yaml-preamble",
+    
+    // Convinience
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "mechatroner.rainbow-csv",
+    "ms-vscode.live-server",
+    "ms-vscode.notepadplusplus-keybindings",
+    "tomoki1207.pdf",
+
+    // Git, GitHub
+    "git-emoji.vscode-git-emoji",
+    "githru.githru-vscode-ext",
+    "github.vscode-pull-request-github",
+    "mhutchie.git-graph",
+    "ms-vscode.vscode-github-issue-notebooks",
+
+    // Container, Remote-SSH
+    "ms-azuretools.vscode-containers",
+    "ms-vscode-remote.remote-ssh",
+    "ms-vscode-remote.remote-ssh-edit",
+    "ms-vscode.remote-explorer",
+
+    // Python
+    "kevinrose.vsc-python-indent",
+    "ms-python.debugpy",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-python.vscode-python-envs",
+    "ms-toolsai.jupyter",
+    "ms-toolsai.jupyter-keymap",
+    "ms-toolsai.jupyter-renderers",
+    "ms-toolsai.vscode-jupyter-cell-tags",
+    "ms-toolsai.vscode-jupyter-slideshow",
+    
+    // ORIGINATED FROM AndrewDongminYoo/extensions.json
+    // # 깃 관련 기본 익스텐션
+    // 깃랩 워크플로우. 깃랩의 CI/CD를 VSCode에서 편하게 관리할 수 있게 해주는 플러그인
+    "gitlab.gitlab-workflow",
+    // 깃헙 워크플로우. 깃헙의 CI/CD를 VSCode에서 편하게 관리할 수 있게 해주는 플러그인
+    "cschleiden.vscode-github-actions",
+    // 깃렌즈. 거의 필수 익스텐션. 커밋 뿐만 아니라, 파일히스토리, 브랜치, 스태시 등을 관리할 수 있게 해주는 플러그인
+    "eamodio.gitlens",
+    // 깃 히스토리. 깃 커밋의 히스토리(+깃 로그)를 보여주는 플러그인. 깃렌즈의 파일히스토리 기능과 비슷하지만, 
+    // 파일 히스토리는 파일 단위로 보여주는 반면, 깃 히스토리는 커밋 단위로 보여줌. 둘 다 사용하면 좋음
+    "donjayamanne.githistory",
+    // 깃 이그노어 파일을 자동으로 생성해주는 플러그인. 각 언어/IDE/프레임워크 별로 공식화된 템플릿을 제공
+    "codezombiech.gitignore",
+    // 리모트허브. 깃허브에 있는 리포지토리를 VSCode에서 관리 및 코드 편집할 수 있게 해주는 플러그인
+    "github.remotehub",
+    // 깃 프로젝트 매니저. 깃 초기화가 되어있는 폴더들을 인식해 에디터에서 쉽게 다른 리포지토리로 이동할 수 있게 해주는 플러그인
+    "felipecaputo.git-project-manager",
+    // 깃 그래프. 깃 커밋 그래프를 보여주는 플러그인. 브랜치가 많고 머지, 체크아웃 등의 변화가 많은 프로젝트의 경우 매우 유용함.
+    "mhutchie.git-graph",
+    // 깃 블레임. 깃 커밋을 마우스오버하면 해당 커밋의 작성자, 커밋 메시지 등을 보여주는 플러그인. 팀 작업에서 동료를 힐난하기에 유용함. (농담)
+    "waderyan.gitblame",
+    
+    // # 커밋 컨벤션 관련 익스텐션
+    // 컨벤셔널 커밋 익스텐션. 사용 시 소스컨트롤 탭에 아이콘이 생기는데, feat(android): ~ 이런 식으로 커밋 메시지를 작성할 수 있게 해줌
+    // 커밋 메시지를 작성할 때 통일성을 유지할 수 있어서 CHANGELOG.md 파일을 자동으로 생성해주는 플러그인들과도 잘 어울림
+    "vivaxy.vscode-conventional-commits",
+    // 커밋린트. 프로젝트 메인 컨트리뷰터 등이 정하는 커밋 양식에 따라 커밋 메세지의 한줄 당 문자열 길이 제한, 첫 글자 대문자 금지 등 
+    // 챙기기 귀찮은 컨벤션을 체크해주는 플러그인. 특별히 설정하지 않으면 프로젝트 내에 commitlint.config.js 파일이 있을 때만 작동함
+    "joshbolduc.commitlint",
+
+    // # 테마/아이콘 관련 익스텐션
+    // VSCode Icons. VSCode 아이콘 개발팀에서 만든 공식 아이콘팩
+    "vscode-icons-team.vscode-icons",
+    // [공식]머터리얼 테마. 머터리얼 디자인의 테마
+    "Equinusocio.vsc-community-material-theme",
+    // [공식]머터리얼 테마별 아이콘팩. 머터리얼 테마와 함께 사용하는 것을 추천
+    "equinusocio.vsc-material-theme-icons",
+    // 머터리얼 스타일로 디자인한 아이콘팩 (뷰, 리액트, 앵귤러 등 Node.js 라이브러리 특화)
+    "pkief.material-icon-theme",
+
+    // # 개발자 자기관리 관련 익스텐션
+    // 와카타임 (언어별 코딩시간 측정, 깃헙에 통계로 표시)
+    // VSCode 뿐만 아니라 XCode 외에는 대부분의 IDE에서 지원하는 플러그인. 로컬에 설정파일을 저장하면 터미널, 브라우저 사용시간까지 측정.
+    "wakatime.vscode-wakatime",
+    // 스테이트풀 (와카타임과 유사하지만 훨씬 풍부한 UI를 제공하는 플러그인) 오늘의 코딩시간, 주간/월간/연간 코딩시간 등을 통계로 보여줌. 랭킹도 있음.
+    "stateful.stable",
+
+    // # 코드 내 주석 관련 익스텐션
+    // "Generate Documentation"이라는 컨텍스트 커맨드로, TypeScript, JavaScript 블록커멘트를 간단하게 AI 생성해주는 플러그인
+    "oouo-diogo-perdigao.docthis",
+    // Better Comments. 코드 블럭 작성 시 TODO, FIXME, NOTE 등의 주석을 작성하면, 해당 주석에 대한 하이라이트가 표시되는 플러그인.
+    "aaron-bond.better-comments",
+
+    // # 라이브 익스텐션
+    // 라이브셰어. 실시간으로 다른 사람과 코드를 공유할 수 있게 해주는 플러그인
+    "ms-vsliveshare.vsliveshare",
+    // 라이브서버. 정적 웹사이트를 로컬호스트로 런치해 실시간으로 브라우저에서 반영해주는 플러그인
+    "ritwickdey.liveserver",
+    // 라이브서버 프리뷰. 위 익스텐션과 같은 기능이지만 VSCode 에디터 창으로 미리보기를 제공해주는 플러그인
+    "ms-vscode.live-server",
+
+    // # 휴먼 실수 방지 익스텐션 (린터/포맷터/오탈자 체크 등)
+    // 프리티어 (코드 포맷터)의 VSCode 플러그인. 프리티어 설정 파일(.prettierrc 등)이 있으면 자동으로 적용됨
+    "esbenp.prettier-vscode",
+    // 마크다운 올인원. 마크다운을 작성할 때 편리한 기능(HTML 익스포트, 코드블럭/수학블럭 토글 기능 등)을 대부분 제공하는 플러그인
+    "yzhang.markdown-all-in-one",
+    // 마크다운 린트. 마크다운 문법을 검사해주는 플러그인. 헤딩 레벨이 잘못되었는지, 링크가 잘못되었는지 등을 검사해줌
+    "davidanson.vscode-markdownlint",
+    // 트렁크 (포맷터+린터 통합. `trunk init`으로 리포의 언어를 감지해 최적의 린터,포맷터 셋팅해줌: svg,png,env 같은 파일의 포맷팅도 왜인지 지원해줌.)
+    // 주요 커맨드는 `trunk lint`, `trunk fmt` 등. 인수 없이 실행하면 현재 언커밋 파일만 체크/포맷팅해줌.
+    // init 시에 깃과 연동할지 묻는데, 연동하면 커밋/푸쉬 전에 자동으로 린트/포맷팅해줌.
+    // 약간의 설정이 필요하기는 하나, 린터/포맷터 설정을 각각으로 하지 않아도 되는 편리함이 있음. 트렁크 서버가 있어, 자주 쓰는 설정 백업 가능.
+    "trunk.io",
+    // Editor Config. 프로젝트 내의 .editorconfig 파일을 인식해 에디터의 설정을 자동으로 맞춰줌.
+    // JS,TS 외에도 모든 확장자들 각각에 다른 린터/포맷터 설정을 할 수 있음
+    "editorconfig.editorconfig",
+    // CSS Peek. CSS 선택자(ID, Class)에 마우스오버하면 해당 클래스명이 정의된 CSS 파일을 바로 보여주며 클릭 시 해당 파일로 이동해줌
+    "pranaygp.vscode-css-peek",
+    // 일명 cSpell. 오탈자를 체크해주는 플러그인. 영어 단어의 오탈자를 체크해주는 기능이 강력해서, 잘못된 철자의 변수/함수명을 만들거나 하는 경우를 막아줌.
+    // 오탈자를 체크하면서 프로젝트 단위로 단어들을 추가할 수 있어서, 이 익스텐션에 대한 설정이 포함된 .vscode/settings.json 파일을 팀원 간 공유하면 모두의 PROBLEMS 탭이 조용해져 편함.
+    // 내 로컬 설정에 추가할지, 이 프로젝트에만 추가할지 선택할 수 있는데, 유저 셋팅에는 내가 쓰는 이메일이나 깃허브 아이디 등을 오탈자 체크를 해제해주는 것이 좋음
+    "streetsidesoftware.code-spell-checker",
+    // VSCode 공식 익스텐션으로, 코드 마우스오버 시에 해당 코드의 실제로 쓰이는 예제를 깃헙으로부터 가져와서 보여줌
+    "visualstudioexptteam.intellicode-api-usage-examples",
+    // VSCode 공식 AI 익스텐션 인텔리코드. 코드 자동완성, 코드 리팩토링 등을 제공하는 플러그인
+    "visualstudioexptteam.vscodeintellicode",
+
+    // # 편의성 익스텐션
+    // 텍스트 파워툴즈 (문자열에 관련된 거의 모든 기능을 제공하는 플러그인. 정렬, 카멜케이스, 스네이크케이스 변경 등)
+    "qcz.text-power-tools",
+    // 컬러인포. 컬러코드를 마우스오버하면 해당 컬러코드의 색상을 보여주는 플러그인. 컬러코드를 직접 입력해야 하므로, 컬러피커를 사용하는 것이 더 편함
+    // 하지만 추천하는 이유는 HEX -> RGB 변환 등의 기능이 있어서, 컬러코드를 직접 입력해야 하는 경우에 유용함
+    "bierner.color-info",
+    // 컬러하이라이트. HEX, RGB, RGBA, HSL, HSLA 등의 컬러코드를 자동으로 하이라이팅해주는 플러그인. 
+    // 스크롤바에도 컬러가 표시됨. 디자인 정의파일에서 원하는 색상을 고를 때 편함
+    "naumovs.color-highlight"
+  ]
+}

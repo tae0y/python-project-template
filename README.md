@@ -27,30 +27,31 @@ A reusable `.claude/` configuration template for Claude Code Python projects. It
     cd my-project
     ```
 
-2. Set up the Python environment.
+1. Run the initialization script.
+
+    ```bash
+    bash scripts/init-project.sh my-project
+    ```
+
+    This removes template-only directories (`localdocs/`, `proposals/`, `resources/`, `*.nouse/`), deletes `.gitkeep` files, updates `pyproject.toml` and `README.md` with the project name, and bootstraps a fresh `localdocs/` directory.
+
+1. Set up the Python environment.
 
     ```bash
     uv sync
     ```
 
-3. Install the pre-commit hook.
+1. Install the pre-commit hook.
 
     ```bash
     pre-commit install --hook-type commit-msg
     ```
 
-4. Initialize the local docs directory.
+1. Customize `CLAUDE.md` for your project. See `CLAUDE.sample.md` for reference.
 
-    ```bash
-    mkdir -p localdocs/adr
-    touch localdocs/worklog.todo.md localdocs/worklog.doing.md localdocs/worklog.done.md
-    ```
+    > **Note:** If you use a shared TIL repository, move `.claude/skills.nouse/localdocs-til-link` into `.claude/skills/` and run `/localdocs-til-link` to symlink `localdocs/` there.
 
-    > **Note:** If needed, move the `.claude/skills.nouse/localdocs-til-link` skill into `.claude/skills/` and link `localdocs/` to your shared documentation folder.
-
-5. Customize `CLAUDE.md` for your project. See `CLAUDE.sample.md` for reference.
-
-6. The full directory structure looks like this:
+1. The full directory structure looks like this:
 
     ```
     .claude/

@@ -1,0 +1,30 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+tab_width = 4
+end_of_line = lf
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Python files
+[*.py]
+indent_size = 4
+max_line_length = 88
+
+# JSON / TOML / YAML files
+[*.{json,jsonc,toml}]
+indent_size = 2
+
+[*.{yaml,yml}]
+indent_size = 2
+
+# Markdown
+[*.md]
+trim_trailing_whitespace = false
+
+# Makefile requires tabs
+[Makefile]
+indent_style = tab
