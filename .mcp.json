@@ -1,32 +1,34 @@
 {
-	"mcpServers": {
-		"arxiv-mcp-server": {
-		  "command": "uv",
-		  "args": [
-		      "tool",
-		      "run",
-		      "arxiv-mcp-server",
-		      "--storage-path", "./.arxiv"
-		  ]
-		},
-		"context7": {
-			"command": "npx",
-			"args": [
-				"-y",
-				"@upstash/context7-mcp@latest"
-			],
-			"type": "stdio"
-		},
-		"playwright": {
-			"command": "npx",
-			"args": [
-				"-y",
-				"@executeautomation/playwright-mcp-server"
-			]
-		},
-		"microsoft-learn": {
-			"type": "http",
-			"url": "https://learn.microsoft.com/api/mcp"
-		}
-	}
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
+      "type": "stdio"
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "chrome-devtools-mcp@latest"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@executeautomation/playwright-mcp-server"
+      ]
+    },
+    "microsoft-learn": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
+    },
+    "jcodemunch": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["jcodemunch-mcp"]
+    }
+  }
 }
