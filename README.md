@@ -18,6 +18,16 @@ A reusable `.claude/` configuration template for Claude Code Python projects. It
 > This workflow originated from [citypaul/.dotfiles](https://github.com/citypaul/.dotfiles).
 > For details, see [Workflow: Plan-Implement-Document-Guard](docs/guide-development-workflow.md) and [Template Management Skill](docs/guide-template-management.md).
 
+## External Services
+
+This template includes optional integrations with third-party services. Some have commercial pricing:
+
+| Service | Purpose | Free tier | Pricing |
+|---------|---------|-----------|---------|
+| [jcodemunch](https://jcodemunch.com) | Code navigation & symbol search via MCP | — | Paid for commercial use |
+
+> If you don't need jcodemunch, remove `mcp__jcodemunch` entries from `.mcp.json` and `.claude/rules/code-navigation-guidelines.md`.
+
 ## Getting Started
 
 1. Clone this repository.
