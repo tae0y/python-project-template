@@ -41,10 +41,22 @@ find "$ROOT/.claude" -maxdepth 1 -name "*.nouse" -type d | while read -r d; do
     echo "  removed  .claude/$(basename "$d")/"
 done
 
-# Remove .arxiv directory if present
-if [[ -d "$ROOT/.arxiv" ]]; then
-    rm -rf "$ROOT/.arxiv"
-    echo "  removed  .arxiv/"
+# Remove claude-code-ref directories under .claude/
+find "$ROOT/.claude" -maxdepth 1 -name "claude-code-ref" -type d | while read -r d; do
+    rm -rf "$d"
+    echo "  removed  .claude/$(basename "$d")/"
+done
+
+# Remove settings.local.json
+if [[ -f "$ROOT/.claude/settings.local.json" ]]; then
+    rm -f "$ROOT/.claude/settings.local.json"
+    echo "  removed  .claude/settings.local.json"
+fi
+
+# Overwrite settings.json with settings.sample.json
+if [[ -f "$ROOT/.claude/settings.sample.json" ]]; then
+    cp "$ROOT/.claude/settings.sample.json" "$ROOT/.claude/settings.json"
+    echo "  copied   .claude/settings.sample.json → settings.json"
 fi
 
 # ── 3. Remove .gitkeep files ─────────────────────────────────────────────────
@@ -77,12 +89,11 @@ sed -i '' -E "s|\"src/[a-zA-Z0-9_-]+\"|\"src/$PACKAGE_NAME\"|g" "$TOML"
 
 echo "  pyproject.toml updated"
 
-# ── 5. Update README.md title ────────────────────────────────────────────────
-echo "[4/4] Updating README.md..."
+# ── 5. Reset README.md ──────────────────────────────────────────────────────
+echo "[4/4] Resetting README.md..."
 README="$ROOT/README.md"
-# Replace the first H1 heading with the new project name
-sed -i '' "1s|^# .*|# $PROJECT_NAME|" "$README"
-echo "  README.md title updated"
+printf "# %s\n" "$PROJECT_NAME" > "$README"
+echo "  README.md reset to H1 title only"
 
 # ── 6. Bootstrap localdocs ───────────────────────────────────────────────────
 echo ""
