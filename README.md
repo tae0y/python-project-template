@@ -5,6 +5,8 @@
 
 A reusable `.claude/` configuration template for Claude Code Python projects. It enables fast, accurate prototyping and establishes a self-improvement loop grounded in documentation and evidence.
 
+This workflow originated from [citypaul/.dotfiles](https://github.com/citypaul/.dotfiles) and adapted for my own use.
+
 ## Core Features
 
 🔄 **Bidirectional template sync** — Keep downstream projects and this template in sync. When a downstream project discovers a useful pattern, it can propose changes upstream; the template consolidates and broadcasts updates back to all projects.
@@ -15,8 +17,14 @@ A reusable `.claude/` configuration template for Claude Code Python projects. It
 
 🛡️ **Python quality pipeline** — A pre-commit pipeline enforces Python conventions on every commit: `ruff` for linting and formatting, `bandit` for security scanning, and `pip-audit` for dependency vulnerability checks. The `check` skill runs all gates in read-only mode for inspection; `auto-fix` applies safe automated fixes.
 
-> This workflow originated from [citypaul/.dotfiles](https://github.com/citypaul/.dotfiles).
-> For details, see [Workflow: Plan-Implement-Document-Guard](docs/guide-development-workflow.md) and [Template Management Skill](docs/guide-template-management.md).
+For details, refer to these documents.
+
+| Document | Description |
+|----------|-------------|
+| [Workflow: Plan-Implement-Document-Guard](docs/guide-development-workflow.md) | End-to-end development workflow |
+| [Template Management Skill](docs/guide-template-management.md) | Bidirectional template sync between projects |
+| [Hooks Reference](docs/guide-hooks.md) | How hooks intercept tool calls to enforce rules |
+| [Rules Reference](docs/guide-rules.md) | How rules shape Claude's behavior every session |
 
 ## External Services
 
@@ -43,7 +51,7 @@ This template includes optional integrations with third-party services. Some hav
     bash scripts/init-project.sh my-project
     ```
 
-    This removes template-only directories (`localdocs/`, `proposals/`, `resources/`, `*.nouse/`, `claude-code-ref/`), deletes `.gitkeep` files, resets `settings.json` from `settings.sample.json`, removes `settings.local.json`, resets `README.md` to an H1 title, updates `pyproject.toml` with the project name, and bootstraps a fresh `localdocs/` directory.
+    This removes template-only directories (`localdocs/`, `proposals/`, `resources/`, `docs/`, `*.nouse/`, `claude-code-ref/`), deletes `.gitkeep` files, resets `settings.json` from `settings.sample.json`, removes `settings.local.json`, resets `README.md` to an H1 title, updates `pyproject.toml` with the project name, and bootstraps a fresh `localdocs/` directory.
 
 1. Set up the Python environment.
 

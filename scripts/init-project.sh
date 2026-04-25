@@ -26,9 +26,28 @@ echo "==> Project : $PROJECT_NAME"
 echo "==> Package : $PACKAGE_NAME"
 echo ""
 
-# ── 2. Remove template-only directories ─────────────────────────────────────
+# ── 2. Preview what will be deleted ─────────────────────────────────────────
+echo "The following will be deleted:"
+echo ""
+for dir in localdocs proposals resources docs; do
+    [[ -e "$ROOT/$dir" ]] && echo "  $dir/"
+done
+find "$ROOT/.claude" -maxdepth 1 \( -name "*.nouse" -o -name "claude-code-ref" \) -type d \
+    | while read -r d; do echo "  .claude/$(basename "$d")/"; done
+[[ -f "$ROOT/.claude/settings.local.json" ]] && echo "  .claude/settings.local.json"
+find "$ROOT" -not -path "*/.git/*" -not -path "*/.venv/*" -name ".gitkeep" -type f \
+    | while read -r f; do echo "  ${f#$ROOT/}"; done
+echo ""
+read -rp "Continue? [y/N] " CONFIRM
+if [[ "${CONFIRM,,}" != "y" ]]; then
+    echo "Aborted."
+    exit 0
+fi
+echo ""
+
+# ── 3. Remove template-only directories and reset files ─────────────────────
 echo "[1/4] Removing template-only directories..."
-for dir in localdocs proposals resources; do
+for dir in localdocs proposals resources docs; do
     if [[ -e "$ROOT/$dir" ]]; then
         rm -rf "$ROOT/$dir"
         echo "  removed  $dir/"
@@ -59,7 +78,7 @@ if [[ -f "$ROOT/.claude/settings.sample.json" ]]; then
     echo "  copied   .claude/settings.sample.json → settings.json"
 fi
 
-# ── 3. Remove .gitkeep files ─────────────────────────────────────────────────
+# ── 4. Remove .gitkeep files ─────────────────────────────────────────────────
 echo "[2/4] Removing .gitkeep files..."
 find "$ROOT" \
     -not -path "*/.git/*" \
@@ -70,7 +89,7 @@ find "$ROOT" \
     -delete \
     | sed 's|^|  removed  |'
 
-# ── 4. Rename coverage/test source path in pyproject.toml ───────────────────
+# ── 5. Rename coverage/test source path in pyproject.toml ───────────────────
 echo "[3/4] Updating pyproject.toml..."
 TOML="$ROOT/pyproject.toml"
 
@@ -89,13 +108,13 @@ sed -i '' -E "s|\"src/[a-zA-Z0-9_-]+\"|\"src/$PACKAGE_NAME\"|g" "$TOML"
 
 echo "  pyproject.toml updated"
 
-# ── 5. Reset README.md ──────────────────────────────────────────────────────
+# ── 6. Reset README.md ──────────────────────────────────────────────────────
 echo "[4/4] Resetting README.md..."
 README="$ROOT/README.md"
 printf "# %s\n" "$PROJECT_NAME" > "$README"
 echo "  README.md reset to H1 title only"
 
-# ── 6. Bootstrap localdocs ───────────────────────────────────────────────────
+# ── 7. Bootstrap localdocs ───────────────────────────────────────────────────
 echo ""
 echo "Bootstrapping localdocs/..."
 mkdir -p "$ROOT/localdocs/adr"
