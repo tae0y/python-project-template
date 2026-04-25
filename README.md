@@ -51,7 +51,7 @@ This template includes optional integrations with third-party services. Some hav
     bash scripts/init-project.sh my-project
     ```
 
-    This removes template-only directories (`localdocs/`, `proposals/`, `resources/`, `docs/`, `*.nouse/`, `claude-code-ref/`), deletes `.gitkeep` files, resets `settings.json` from `settings.sample.json`, removes `settings.local.json`, resets `README.md` to an H1 title, updates `pyproject.toml` with the project name, and bootstraps a fresh `localdocs/` directory.
+    This removes template-only directories (`localdocs/`, `proposals/`, `resources/`, `docs/`, `*.nouse/`, `claude-code-ref/`), deletes `.gitkeep` files, removes cache and build artifacts (`.venv`, `__pycache__`, `.pytest_cache`, `.ruff_cache`, `.mypy_cache`, `dist`, `build`, `*.egg-info`), resets `settings.json` from `settings.sample.json`, removes `settings.local.json`, resets `README.md` to an H1 title, updates `pyproject.toml` with the project name, and bootstraps a fresh `localdocs/` directory.
 
 1. Set up the Python environment.
 

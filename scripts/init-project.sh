@@ -37,6 +37,12 @@ find "$ROOT/.claude" -maxdepth 1 \( -name "*.nouse" -o -name "claude-code-ref" \
 [[ -f "$ROOT/.claude/settings.local.json" ]] && echo "  .claude/settings.local.json"
 find "$ROOT" -not -path "*/.git/*" -not -path "*/.venv/*" -name ".gitkeep" -type f \
     | while read -r f; do echo "  ${f#$ROOT/}"; done
+for cache in .venv __pycache__ .pytest_cache .ruff_cache .mypy_cache dist build; do
+    find "$ROOT" -not -path "*/.git/*" -name "$cache" \( -type d -o -type f \) 2>/dev/null \
+        | while read -r p; do echo "  ${p#$ROOT/}"; done
+done
+find "$ROOT" -not -path "*/.git/*" -name "*.egg-info" -type d 2>/dev/null \
+    | while read -r p; do echo "  ${p#$ROOT/}"; done
 echo ""
 read -rp "Continue? [y/N] " CONFIRM
 if [[ "${CONFIRM,,}" != "y" ]]; then
@@ -46,7 +52,7 @@ fi
 echo ""
 
 # ── 3. Remove template-only directories and reset files ─────────────────────
-echo "[1/4] Removing template-only directories..."
+echo "[1/5] Removing template-only directories..."
 for dir in localdocs proposals resources docs; do
     if [[ -e "$ROOT/$dir" ]]; then
         rm -rf "$ROOT/$dir"
@@ -79,7 +85,7 @@ if [[ -f "$ROOT/.claude/settings.sample.json" ]]; then
 fi
 
 # ── 4. Remove .gitkeep files ─────────────────────────────────────────────────
-echo "[2/4] Removing .gitkeep files..."
+echo "[2/5] Removing .gitkeep files..."
 find "$ROOT" \
     -not -path "*/.git/*" \
     -not -path "*/.venv/*" \
@@ -89,8 +95,23 @@ find "$ROOT" \
     -delete \
     | sed 's|^|  removed  |'
 
-# ── 5. Rename coverage/test source path in pyproject.toml ───────────────────
-echo "[3/4] Updating pyproject.toml..."
+# ── 5. Remove cache and build artifacts ──────────────────────────────────────
+echo "[3/5] Removing cache and build artifacts..."
+for cache in .venv __pycache__ .pytest_cache .ruff_cache .mypy_cache dist build; do
+    find "$ROOT" -not -path "*/.git/*" -name "$cache" \( -type d -o -type f \) 2>/dev/null \
+        | while read -r p; do
+            rm -rf "$p"
+            echo "  removed  ${p#$ROOT/}"
+        done
+done
+find "$ROOT" -not -path "*/.git/*" -name "*.egg-info" -type d 2>/dev/null \
+    | while read -r p; do
+        rm -rf "$p"
+        echo "  removed  ${p#$ROOT/}"
+    done
+
+# ── 6. Rename coverage/test source path in pyproject.toml ───────────────────
+echo "[4/5] Updating pyproject.toml..."
 TOML="$ROOT/pyproject.toml"
 
 # project.name
@@ -108,13 +129,13 @@ sed -i '' -E "s|\"src/[a-zA-Z0-9_-]+\"|\"src/$PACKAGE_NAME\"|g" "$TOML"
 
 echo "  pyproject.toml updated"
 
-# ── 6. Reset README.md ──────────────────────────────────────────────────────
-echo "[4/4] Resetting README.md..."
+# ── 7. Reset README.md ──────────────────────────────────────────────────────
+echo "[5/5] Resetting README.md..."
 README="$ROOT/README.md"
 printf "# %s\n" "$PROJECT_NAME" > "$README"
 echo "  README.md reset to H1 title only"
 
-# ── 7. Bootstrap localdocs ───────────────────────────────────────────────────
+# ── 8. Bootstrap localdocs ───────────────────────────────────────────────────
 echo ""
 echo "Bootstrapping localdocs/..."
 mkdir -p "$ROOT/localdocs/adr"
