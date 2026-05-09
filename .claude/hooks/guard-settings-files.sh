@@ -25,4 +25,16 @@ if echo "$TARGET" | grep -qE '\.claude/settings[^/]*\.json'; then
   exit 2
 fi
 
+if echo "$TARGET" | grep -qE 'guard-settings-files'; then
+  echo "[guard-settings-files] BLOCKED: $TOOL attempted to modify the guard hook itself." >&2
+  echo "Target: $TARGET" >&2
+  exit 2
+fi
+
+if echo "$TARGET" | grep -qE '\.claude/hooks'; then
+  echo "[guard-settings-files] BLOCKED: $TOOL attempted to access the hooks directory." >&2
+  echo "Target: $TARGET" >&2
+  exit 2
+fi
+
 exit 0
