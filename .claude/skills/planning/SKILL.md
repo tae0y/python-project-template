@@ -101,9 +101,51 @@ Unverified / TBD: [what couldn't be confirmed — flag as risk in plan]
 
 If verification reveals a blocker or significant risk, surface it before proceeding to the interview.
 
+### Step 0-BDD: Requirements Specification (MVP / PROD only)
+
+With stage declared and assumptions verified, clarify *what* to build before addressing *how*.
+
+**Stage branching:**
+
+| Stage | grill-me | user-story.md | BDD pytest |
+|-------|----------|---------------|------------|
+| SPIKE | ✅ questions only | ❌ | ❌ |
+| Architecture | ✅ questions only | ❌ | ❌ |
+| MVP | ✅ | ✅ user writes | ✅ user writes |
+| PROD | ✅ | ✅ user writes | ✅ user writes |
+
+**Execution — SPIKE / Architecture:**
+
+Run `grill-me` to reach shared understanding. Stop when the user confirms no more open questions. No written artifacts required.
+
+**Execution — MVP / PROD:**
+
+1. **Step 1 — grill-me**: Use the `grill-me` skill to probe requirements until shared understanding is reached.
+2. **Step 2 — user writes `localdocs/user-story.*.md`**: Wait for the user to write the file. Do not write it for them.
+3. **Step 3 — user writes BDD pytest file in `tests/`**: Wait for the user to write failing tests. Do not generate them.
+4. **Step 4 — reference in plan**: When creating `localdocs/plan.<topic>.md`, explicitly name the `user-story.*.md` file in the Goal section.
+
+**Claude behavior rules during Phase 0-BDD:**
+
+❌ Do NOT:
+- Generate code of any kind
+- Write `user-story.*.md` directly
+- Present a complete given/when/then scenario
+- Generate the BDD pytest file
+
+✅ DO:
+- Ask questions using `grill-me` style
+- Provide one sample or a partial skeleton *only if the user explicitly asks before starting to write*
+  - Option A: one complete test as reference (one only)
+  - Option B: empty skeleton (function signature + comments, no body)
+
+The user types "이제 쓸게" or equivalent → switch immediately to waiting mode.
+
+---
+
 ### Step 0-C: Implementation Interview
 
-With stage declared and technical assumptions verified, probe for implementation-specific unknowns. Use `AskUserQuestion`.
+With stage declared, technical assumptions verified, and requirements specified, probe for implementation-specific unknowns. Use `AskUserQuestion`.
 
 **When to run this interview:**
 - Always, before creating `localdocs/plan.<topic>.md`
@@ -220,6 +262,8 @@ Only proceed with commit after explicit approval.
 ## Goal
 
 [One sentence describing the outcome]
+
+**User story reference**: `localdocs/user-story.<topic>.md` *(MVP/PROD only — omit for SPIKE)*
 
 ## Acceptance Criteria
 
@@ -342,9 +386,16 @@ START FEATURE
 │   └─► If SPIKE: capture hypothesis + exit criteria
 ├─► Phase 0-B: Technical feasibility check (WebSearch)
 │   └─► State verified / unverified assumptions before proceeding
+├─► Phase 0-BDD: Requirements specification
+│   ├─► [SPIKE/Architecture] grill-me questions → shared understanding only
+│   └─► [MVP/PROD]
+│       ├─► grill-me questions until no open requirements
+│       ├─► user writes localdocs/user-story.*.md
+│       ├─► user writes tests/test_*.py (BDD failing tests)
+│       └─► (Claude waits — does NOT generate these artifacts)
 ├─► Phase 0-C: Pre-implementation interview (AskUserQuestion)
 │   └─► Continue until no new unknowns emerge
-├─► Create `localdocs/plan.<topic>.md` (get approval)
+├─► Create `localdocs/plan.<topic>.md` with user-story ref (get approval)
 ├─► worklog todo  ← each step from the plan
 ├─► worklog doing ← first step (do this immediately, without waiting to be asked)
 │

@@ -14,14 +14,18 @@ Reference when starting a new session or onboarding to `.claude/`.
    prd (optional)         /project:resume-work
         │                       │
         ▼                       ▼
-   planning ──────────► execution loop
-        │                       │
-        │   worklog (auto)      │
-        ▼                       ▼
-  implementation ────────► commit gate
-  (tdd auto-applied)      (check → auto-fix → approval)
-        │
-        ▼
+   planning ─────────────────────────────────────────────────► execution loop
+        │                                                             │
+        │  Phase 0-A: Declare stage (SPIKE / MVP / PROD)             │
+        │  Phase 0-B: Technical feasibility check (WebSearch)        │  worklog (auto)
+        │  Phase 0-BDD: Requirements specification                   │
+        │    ├─[SPIKE/Architecture] grill-me questions only          ▼
+        │    └─[MVP/PROD] grill-me → user writes user-story.md  implementation
+        │                          → user writes BDD pytest     (tdd auto-applied)
+        │  Phase 0-C: Implementation interview (AskUserQuestion)     │
+        │  → plan.md (approval)                                      ▼
+        │                                                       commit gate
+        ▼                                              (check → auto-fix → approval)
   documentation (md-janitor, optional)
 ```
 
@@ -48,7 +52,7 @@ Applied automatically when specific intent or keywords are detected.
 | Component | Trigger conditions |
 |-----------|-------------------|
 | `prd` skill | "write a PRD", "document requirements", "plan a feature" |
-| `planning` skill | Starting new feature/task, "how should we approach this" |
+| `planning` skill | Starting new feature/task, "how should we approach this" — includes Phase 0-BDD (requirements spec via grill-me + user-written user-story.md + BDD pytest for MVP/PROD) |
 | `md-janitor` skill | "write docs", "fix README", any `.md` file editing |
 | `template-upstream` skill | "reflect to template", "create a proposal" |
 | `template-downstream` skill | "sync template", "pull upstream changes" |
