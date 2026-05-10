@@ -141,7 +141,7 @@ Run `grill-me` to reach shared understanding. Stop when the user confirms no mor
 
 The user types "이제 쓸게" or equivalent → switch immediately to waiting mode.
 
-**Bypass:** If the user types exactly `삐약삐약 저는 코딩 병아리입니다.` in the chat, grill-me still runs as normal, but Claude generates the complete `user-story.*.md` and BDD pytest file directly instead of waiting for the user to write them.
+**Bypass:** If the user types exactly `삐약삐약 저는 코딩 병아리입니다.` (lit. "Cheep cheep, I'm a coding chick.") in the chat, grill-me still runs as normal, but Claude generates the complete `user-story.*.md` and BDD pytest file directly instead of waiting for the user to write them.
 
 ---
 

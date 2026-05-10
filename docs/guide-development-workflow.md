@@ -24,7 +24,24 @@ Every task passes through four stages.
 
 ## Plan
 
-The `planning` skill breaks work into known-good increments. Each increment must have passing tests, fit in one commit, and be describable in one sentence. If a PRD is needed, the `prd` skill runs first.
+The `planning` skill structures the work before any code is written. It begins with a sequence of steps designed to make sure both the programmer and the AI have a shared, accurate understanding of what needs to be built and why.
+
+**What these steps do:**
+
+1. **Declare the work stage** — Is this exploratory (SPIKE), a first working version (MVP), or production-ready code (PROD)? This shapes how much rigor to apply throughout.
+2. **Check technical feasibility** — Before committing to an approach, the AI searches for known issues, version differences, and API behaviors that training data may have missed.
+3. **Specify requirements in writing (BDD step)** — For MVP and PROD work, the programmer writes down what success looks like *before* implementation starts. This means two things:
+   - A short user-story document (`localdocs/user-story.*.md`) describing who needs what and why, written by the programmer in plain language.
+   - Failing test cases (`tests/test_*.py`) that describe the expected behavior using Given/When/Then structure, also written by the programmer.
+   
+   The AI does not write these. Writing them forces the programmer to understand the requirements well enough to express them as tests — catching ambiguity before it becomes bugs. The AI asks clarifying questions until understanding is shared, then waits.
+   
+   For exploratory SPIKE work, only the clarifying questions are required; no written artifacts.
+4. **Interview for implementation unknowns** — Even with requirements clear, there are usually open questions about *how* to build: data shapes, error handling, edge cases. The AI asks these before creating a plan.
+
+After these steps, a plan file (`localdocs/plan.<topic>.md`) is created and approved by the programmer. Each step in the plan maps to one commit, has a clear done condition, and starts with a failing test.
+
+If a product requirements document is needed before planning, the `prd` skill runs first.
 
 ## Implement
 
