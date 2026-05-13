@@ -88,13 +88,21 @@ These files should not contain project-specific content. If a project needs cust
 
 Stop immediately on any failure. Report the cause before proceeding.
 
+**Execution model:** Claude performs read-only analysis (Steps 1–4). All file-modifying operations (Steps 5–7) are output as shell script blocks for the user to paste into their terminal. Claude never directly executes `cp`, `rm`, or file-write commands.
+
 ### 1. Resolve TEMPLATE_ROOT
 
 Follow the priority order in Source Resolution above. Report which source was used.
 
 ### 2. Check working tree
 
-If there are uncommitted changes, stop:
+Output this command for the user to run and confirm clean before proceeding:
+
+```bash
+git -C "$PROJECT_ROOT" status --short
+```
+
+If the user reports uncommitted changes, stop:
 
 ```
 Uncommitted changes detected. Commit or stash before syncing.
@@ -102,40 +110,9 @@ Uncommitted changes detected. Commit or stash before syncing.
 
 ### 3. Compute diff
 
-Compare each upstream file against the current project:
+Use the Read tool and `find`/`diff -q` via Bash (read-only) to compare each upstream file against the project. Classify each file as NEW, CHANGED, CHANGED (nouse), or PROJECT-ONLY.
 
-```bash
-# Files present in upstream
-find "$TEMPLATE_ROOT/.claude" -type f | while read src; do
-  rel="${src#$TEMPLATE_ROOT/}"
-  dst="$PROJECT_ROOT/$rel"
-
-  # If upstream file is under skills/, check if project moved it to skills.nouse/
-  nouse_dst=""
-  if [[ "$rel" == .claude/skills/* ]]; then
-    nouse_rel="${rel/.claude\/skills\//.claude\/skills.nouse\/}"
-    nouse_dst="$PROJECT_ROOT/$nouse_rel"
-  fi
-
-  if [ -n "$nouse_dst" ] && [ -f "$nouse_dst" ]; then
-    # Project disabled this skill — update nouse copy instead
-    if ! diff -q "$src" "$nouse_dst" > /dev/null 2>&1; then
-      echo "CHANGED (nouse): $nouse_rel"
-    fi
-  elif [ ! -f "$dst" ]; then
-    echo "NEW: $rel"
-  elif ! diff -q "$src" "$dst" > /dev/null 2>&1; then
-    echo "CHANGED: $rel"
-  fi
-done
-
-# Files only in project (report only, do not delete)
-find "$PROJECT_ROOT/.claude" -type f | while read dst; do
-  rel="${dst#$PROJECT_ROOT/}"
-  src="$TEMPLATE_ROOT/$rel"
-  [ ! -f "$src" ] && echo "PROJECT-ONLY: $rel"
-done
-```
+For CHANGED files, read both versions and apply Merge Rules to determine the merged content — do not write yet.
 
 If no changes found:
 ```
@@ -158,48 +135,65 @@ Project-only files (preserved, not deleted):
 Proceed? (Y/N)
 ```
 
-N → cleanup and exit.
+N → exit.
 
-### 5. Apply updates
+### 5. Generate and output copy script
 
-For each file in the update list, apply the appropriate strategy. Skip `settings.local.json`.
-For `CHANGED (nouse)` files, target `skills.nouse/` instead of `skills/`.
+After confirmation, generate a single shell script block covering all updates. The user pastes it into their terminal to execute.
 
-**NEW files** → copy directly:
+**Script structure:**
 
 ```bash
-mkdir -p "$(dirname "$PROJECT_ROOT/$rel")"
-cp "$src" "$PROJECT_ROOT/$rel"
+TEMPLATE_ROOT="<resolved-path>"
+PROJECT_ROOT="<target-path>"
+
+# NEW and always-overwrite files
+mkdir -p "$PROJECT_ROOT/.claude/rules"
+cp "$TEMPLATE_ROOT/.claude/rules/new-rule.md" "$PROJECT_ROOT/.claude/rules/new-rule.md"
+# ... one cp line per file ...
+
+# CHANGED (nouse) files — target skills.nouse/
+cp "$TEMPLATE_ROOT/.claude/skills/tdd/SKILL.md" "$PROJECT_ROOT/.claude/skills.nouse/tdd/SKILL.md"
+
+# .mcp.json and .pre-commit-config.yaml (if applicable)
+cp "$TEMPLATE_ROOT/.mcp.json" "$PROJECT_ROOT/.mcp.json"
+cp "$TEMPLATE_ROOT/.pre-commit-config.yaml" "$PROJECT_ROOT/.pre-commit-config.yaml"
+
+echo "Done. Run: git -C \"$PROJECT_ROOT\" status --short"
 ```
 
-**CHANGED files** → apply Merge Rules:
+**Rules for script generation:**
 
-1. Determine file type (JSON / YAML / always-overwrite / text)
-2. For JSON (`.mcp.json`, `settings.json`):
-   - Read both files, merge keys preserving project-only keys
-   - Write merged result
-3. For YAML (`.pre-commit-config.yaml`):
-   - Read both files, merge entries preserving project-only hooks/repos
-   - Write merged result
-4. For always-overwrite files (`.claude/rules/*.md`, `.claude/agents/*.md`, `.claude/WORKFLOW.md`):
-   - Copy upstream version directly
-5. For other text files (skills, hooks, etc.):
-   - Show diff to user, ask for `(U)pstream / (P)roject / (M)anual`
-   - Default to `(P)` — preserve project version to avoid data loss
+- Skip `settings.local.json` — never include it
+- For CHANGED JSON/YAML files that require merging: instead of `cp`, write the merged content to a temp file and use that as the source, OR instruct the user to apply the merge manually (show the diff)
+- For CHANGED text files where the user chose `(P)` — omit from script entirely
+- Add `mkdir -p` before each `cp` to ensure directories exist
+- One `cp` per line — no loops, no wildcards — so each line is auditable
 
-### 6. Cleanup
+For CHANGED files requiring manual merge, output a separate section:
 
-Only if a temp clone was created:
+```
+Manual merge required for:
+  .claude/skills/my-skill/SKILL.md
+  → diff shown below. Edit the file manually after running the script.
+  [show unified diff here]
+```
+
+### 6. Cleanup (temp clone only)
+
+If a temp clone was created in Step 1, append to the script:
 
 ```bash
 rm -rf "$TMPDIR"
 ```
 
-### 7. Report result
+### 7. Verify and next action
+
+After the user runs the script, ask them to paste the output. Then output:
 
 ```bash
-git diff --stat
-git status --short
+git -C "$PROJECT_ROOT" diff --stat
+git -C "$PROJECT_ROOT" status --short
 ```
 
 If `.pre-commit-config.yaml` changed:
@@ -216,7 +210,7 @@ Update complete. Changes are unstaged.
 
 A) Review diffs file by file
 B) Stage and commit with [MAINTENANCE] prefix
-C) Discard all changes (git checkout -- .)
+C) Discard all changes (git checkout -- . inside PROJECT_ROOT)
 ```
 
 Wait for user choice before proceeding.
